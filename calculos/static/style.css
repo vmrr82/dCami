@@ -1,0 +1,164 @@
+/* ====== RESET BÁSICO ====== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+h4{
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f4f6f8;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+.container-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 30px;
+}
+
+/* ====== GRID PRINCIPAL (Vehículo A | Vehículo B) ====== */
+.datosTecnicosVehiculos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+}
+
+/* ====== TARJETAS DE VEHÍCULOS ====== */
+.vehiculoA,
+.vehiculoB {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+/* Títulos */
+.titleVeh {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+#caracter{
+
+  margin-bottom: 6px;
+  margin-top: 6px;
+}
+
+/* ====== FORMULARIO INTERNO (2 columnas por vehículo) ====== */
+.formMain {
+  display: flex;
+  gap: 20px;
+}
+
+/* Columnas internas */
+.formCol {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Inputs */
+.formCol label {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.formCol input,
+select {
+  padding: 6px;
+  margin-top: 4px;
+}
+
+#anteriorA, #posteriorA{
+
+  width: 60px;
+}
+
+.distribucion{
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 columnas iguales */
+  gap: 30px;
+
+}
+/* Botones */
+button {
+  margin-top: 15px;
+  padding: 8px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #0056b3;
+}
+
+/* ====== RESPONSIVE (móvil) ====== */
+@media (max-width: 900px) {
+  .container-grid {
+    grid-template-columns: 1fr; /* A y B uno debajo del otro */
+  }
+
+  .formMain {
+    flex-direction: column; /* columnas internas apiladas */
+  }
+}
+/*------------------------------------------------------------------------------------------*/
+/*MEDIDA DEFORMACIONES*/
+.medidasDeformaciones{
+  display: grid;
+  grid-template-columns: 1fr fr;
+  gap: 30px;
+}
+
+.deformaciones{
+  display: flex;
+  gap: 20px;
+}
+.tableDefor{
+  border-collapse: collapse;
+  empty-cells: show;
+  text-align: center;
+}
+
+.tableDefor th,
+.tableDefor td{
+  border: 1px solid black;
+  width: 120px;
+  height: 15px;
+  empty-cells: show;
+  padding: 0;
+}
+
+.tableDefor tr{
+  height: 20px;
+}
+
+.tableDefor input{
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  padding: 1px;
+}
+
+#offsetLinea{
+  margin-top: 25px;
+}
