@@ -1,7 +1,11 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from data.dimensiones import modelo_dimensiones, listado, actualizar_dimensiones
 
 app = Flask(__name__)
+@app.route("/")
+def home():
+    return redirect(url_for("index"))
+
 @app.route("/index", methods=["GET", "POST"])
 def index():
     modelos = listado()

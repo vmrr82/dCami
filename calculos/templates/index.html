@@ -38,7 +38,7 @@
           <button type="submit">Cargar dimensiones</button>
         </form>
 
-        <hr>
+        <hr style="margin-top: 10px;">
 
         <!-- Editar/guardar A -->
         <h3 id="caracter">Características:</h3>
@@ -65,7 +65,7 @@
 
 
               <label for="batallaA">Batalla (mm):</label>
-              <input type="number" id="batallaA" name="batalla" value="{{ resultadoA.batallaA if resultadoA else 0 }}"
+              <input type="number" id="batallaA" name="batallaA" value="{{ resultadoA.batallaA if resultadoA else 0 }}"
                 required>
 
               <label for="viaAntA">Vía Ant. (mm):</label>
@@ -77,7 +77,7 @@
                 required>
 
               <label for="volAntA">Vol Ant. (mm):</label>
-              <input type="number" id="volAntA" name="volAntA" value="{{ resultadoA.volAntA if resultadoA else 0 }}"
+              <input type="number" id="volAntA" name="volAntA" value="0"
                 required>
 
               <label for="volPostA">Vol Post. (mm):</label>
@@ -106,9 +106,14 @@
               <h4>CENTRO DE GRAVEDAD</h4>
               <label for="centroAnteriorA">Desde eje ant(CMFa):</label>
               <input type="number" id="centroAnteriorA" name="centroAnteriorA" value="0">
+
               <label for="centroFrontalA">Desde el frontal:</label>
               <input type="number" id="centroFrontalA" name="centroFrontalA" value="0">
+              
+              <button onclick="actualizarCentroFrontalA()" type="button" style="margin-top: 10px;">Calcular</button>
+              
               <hr id="offsetLinea">
+              
               <label for="offsetA">Offset deformación:</label>
               <input type="number" id="offsetA" name="offsetA" value="0">
             </div>
@@ -140,7 +145,8 @@
           <button type="submit">Cargar dimensiones</button>
         </form>
 
-        <hr>
+        <hr style="margin-top: 10px;">
+
 
         <!-- Editar/guardar B -->
         <h3 id="caracter">Características:</h3>
@@ -168,10 +174,7 @@
               <label for="batallaB">Batalla (mm):</label>
               <input type="number" id="batallaB" name="batalla" value="{{ resultadoB.batallaB if resultadoB else 0 }}"
                 required>
-            </div>
-
-            <div class="formCol">
-              <label for="viaAntB">Vía Ant. (mm):</label>
+                              <label for="viaAntB">Vía Ant. (mm):</label>
               <input type="number" id="viaAntB" name="viaAntB" value="{{ resultadoB.viaAntB if resultadoB else 0 }}"
                 required>
 
@@ -180,12 +183,42 @@
                 required>
 
               <label for="volAntB">Vol. Ant. (mm):</label>
-              <input type="number" id="volAntB" name="volAntB" value="{{ resultadoB.volAntB if resultadoB else 0 }}"
+              <input type="number" id="volAntB" name="volAntB" value="0"
                 required>
 
               <label for="volPostB">Vol. Post. (mm):</label>
               <input type="number" id="volPostB" name="volPostB" value="{{ resultadoB.volPostB if resultadoB else 0 }}"
                 required>
+            </div>
+
+            <div class="formCol">
+              <h4>DISTRIBUCIÓN DE CARGA</h4>
+              <div class="distribucion">
+                <label for="anteriorB">Anterior:</label>
+                <input type="number" id="anteriorB" name="anteriorB" value="{{ resultadoB.get('anteriorB', 0) }}"required>
+
+                <input type="number" id="pesoAnteriorB" name="pesoAnteriorB"
+                  value="{{ (resultadoB.get('peso',0) * resultadoB.get('anteriorB',0) / 100) }}" readonly>
+
+                <label for="posteriorB">Posterior:</label>
+                <input type="number" id="posteriorB" name="posteriorB" value="{{ resultadoB.get('posteriorB', 0) }}"required>
+
+                <input type="number" id="pesoPosteriorB" name="pesoPosteriorB" value="0" readonly>
+              </div>
+              <button id="calcularDistribucionB" type="button">Calcular</button>
+              
+              <h4>CENTRO DE GRAVEDAD</h4>
+              <label for="centroAnteriorB">Desde eje ant(CMFa):</label>
+              <input type="number" id="centroAnteriorB" name="centroAnteriorB" value="0">
+
+              <label for="centroFrontalA">Desde el frontal:</label>
+              <input type="number" id="centroFrontalB" name="centroFrontalB" value="0">
+              
+              <button onclick="actualizarCentroFrontalB()" type="button" style="margin-top: 10px;">Calcular</button>
+              <hr id="offsetLinea">
+              
+              <label for="offsetB">Offset deformación:</label>
+              <input type="number" id="offsetB" name="offsetB" value="0">
             </div>
           </div>
 
@@ -194,7 +227,7 @@
       </section>
     </div>
     <div class="medidasDeformaciones">
-      <section class="deformaciones">
+      <section class="deformacionesA">
         <table class="tableDefor">
           <thead>
             <tr>
@@ -318,11 +351,133 @@
               <td><input type="number" step="any" id="area_14" name="area_14"></td>
             </tr>
           </tbody>
-
         </table>
       </section>
       <section class="deformacionesB">
-        <table class="tableDefor"></table>
+        <table class="tableDefor">
+          <thead>
+            <tr>
+              <th> </th>
+              <th>c</th>
+              <th>dc</th>
+              <th>zw</th>
+              <th>Área</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>medida 1</td>
+              <td><input type="number" step="any" id="c_1" name="c_1"></td>
+              <td><input type="number" step="any" id="dc_1" name="dc_1"></td>
+              <td><input type="number" step="any" id="zw_1" name="zw_1"></td>
+              <td><input type="number" step="any" id="area_1" name="area_1"></td>
+            </tr>
+
+            <tr>
+              <td>medida 2</td>
+              <td><input type="number" step="any" id="c_2" name="c_2"></td>
+              <td><input type="number" step="any" id="dc_2" name="dc_2"></td>
+              <td><input type="number" step="any" id="zw_2" name="zw_2"></td>
+              <td><input type="number" step="any" id="area_2" name="area_2"></td>
+            </tr>
+
+            <tr>
+              <td>medida 3</td>
+              <td><input type="number" step="any" id="c_3" name="c_3"></td>
+              <td><input type="number" step="any" id="dc_3" name="dc_3"></td>
+              <td><input type="number" step="any" id="zw_3" name="zw_3"></td>
+              <td><input type="number" step="any" id="area_3" name="area_3"></td>
+            </tr>
+
+            <tr>
+              <td>medida 4</td>
+              <td><input type="number" step="any" id="c_4" name="c_4"></td>
+              <td><input type="number" step="any" id="dc_4" name="dc_4"></td>
+              <td><input type="number" step="any" id="zw_4" name="zw_4"></td>
+              <td><input type="number" step="any" id="area_4" name="area_4"></td>
+            </tr>
+
+            <tr>
+              <td>medida 5</td>
+              <td><input type="number" step="any" id="c_5" name="c_5"></td>
+              <td><input type="number" step="any" id="dc_5" name="dc_5"></td>
+              <td><input type="number" step="any" id="zw_5" name="zw_5"></td>
+              <td><input type="number" step="any" id="area_5" name="area_5"></td>
+            </tr>
+
+            <tr>
+              <td>medida 6</td>
+              <td><input type="number" step="any" id="c_6" name="c_6"></td>
+              <td><input type="number" step="any" id="dc_6" name="dc_6"></td>
+              <td><input type="number" step="any" id="zw_6" name="zw_6"></td>
+              <td><input type="number" step="any" id="area_6" name="area_6"></td>
+            </tr>
+
+            <tr>
+              <td>medida 7</td>
+              <td><input type="number" step="any" id="c_7" name="c_7"></td>
+              <td><input type="number" step="any" id="dc_7" name="dc_7"></td>
+              <td><input type="number" step="any" id="zw_7" name="zw_7"></td>
+              <td><input type="number" step="any" id="area_7" name="area_7"></td>
+            </tr>
+
+            <tr>
+              <td>medida 8</td>
+              <td><input type="number" step="any" id="c_8" name="c_8"></td>
+              <td><input type="number" step="any" id="dc_8" name="dc_8"></td>
+              <td><input type="number" step="any" id="zw_8" name="zw_8"></td>
+              <td><input type="number" step="any" id="area_8" name="area_8"></td>
+            </tr>
+
+            <tr>
+              <td>medida 9</td>
+              <td><input type="number" step="any" id="c_9" name="c_9"></td>
+              <td><input type="number" step="any" id="dc_9" name="dc_9"></td>
+              <td><input type="number" step="any" id="zw_9" name="zw_9"></td>
+              <td><input type="number" step="any" id="area_9" name="area_9"></td>
+            </tr>
+
+            <tr>
+              <td>medida 10</td>
+              <td><input type="number" step="any" id="c_10" name="c_10"></td>
+              <td><input type="number" step="any" id="dc_10" name="dc_10"></td>
+              <td><input type="number" step="any" id="zw_10" name="zw_10"></td>
+              <td><input type="number" step="any" id="area_10" name="area_10"></td>
+            </tr>
+
+            <tr>
+              <td>medida 11</td>
+              <td><input type="number" step="any" id="c_11" name="c_11"></td>
+              <td><input type="number" step="any" id="dc_11" name="dc_11"></td>
+              <td><input type="number" step="any" id="zw_11" name="zw_11"></td>
+              <td><input type="number" step="any" id="area_11" name="area_11"></td>
+            </tr>
+
+            <tr>
+              <td>medida 12</td>
+              <td><input type="number" step="any" id="c_12" name="c_12"></td>
+              <td><input type="number" step="any" id="dc_12" name="dc_12"></td>
+              <td><input type="number" step="any" id="zw_12" name="zw_12"></td>
+              <td><input type="number" step="any" id="area_12" name="area_12"></td>
+            </tr>
+
+            <tr>
+              <td>medida 13</td>
+              <td><input type="number" step="any" id="c_13" name="c_13"></td>
+              <td><input type="number" step="any" id="dc_13" name="dc_13"></td>
+              <td><input type="number" step="any" id="zw_13" name="zw_13"></td>
+              <td><input type="number" step="any" id="area_13" name="area_13"></td>
+            </tr>
+
+            <tr>
+              <td>medida 14</td>
+              <td><input type="number" step="any" id="c_14" name="c_14"></td>
+              <td><input type="number" step="any" id="dc_14" name="dc_14"></td>
+              <td><input type="number" step="any" id="zw_14" name="zw_14"></td>
+              <td><input type="number" step="any" id="area_14" name="area_14"></td>
+            </tr>
+          </tbody>
+        </table>
       </section>
     </div>
 

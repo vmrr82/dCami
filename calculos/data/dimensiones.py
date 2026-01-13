@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-dataSetVehiculos = pd.read_csv(r'calculos\data\cars-dataset.csv',
+dataSetVehiculos = pd.read_csv('./data/cars-dataset.csv',
                     sep=',',              
                     quotechar='"',       
                     low_memory=False,
@@ -15,7 +15,6 @@ def modelo_dimensiones(modelo):
 
     datos = df.loc[df['Model'] == modelo, columnas]
 
-    # ✅ Si no hay filas, devolvemos ceros
     if datos.empty:
         return {"altura": 0, "anchura": 0, "longitud": 0, "Peso": 0}
 
@@ -37,6 +36,5 @@ def listado():
 def actualizar_dimensiones(modelo, altura, anchura, longitud, peso):
     df = dataSetVehiculos
     
-    # Actualizar fila correspondiente
     df.loc[df["Model"] == modelo, ["Height (mm)", "Width (mm)", "Length (mm)", "Peso"]] = [altura, anchura, longitud, peso]
     

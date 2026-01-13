@@ -27,6 +27,9 @@ header {
   grid-template-rows: 1fr 1fr;
   gap: 30px;
 }
+label{
+  font-weight: bold;
+}
 
 /* ====== GRID PRINCIPAL (Vehículo A | Vehículo B) ====== */
 .datosTecnicosVehiculos {
@@ -82,7 +85,7 @@ select {
   margin-top: 4px;
 }
 
-#anteriorA, #posteriorA{
+#anteriorA, #posteriorA, #anteriorB, #posteriorB{
 
   width: 60px;
 }
@@ -123,13 +126,14 @@ button:hover {
 /*MEDIDA DEFORMACIONES*/
 .medidasDeformaciones{
   display: grid;
-  grid-template-columns: 1fr fr;
+  grid-template-columns: 1fr 1fr;
   gap: 30px;
 }
 
-.deformaciones{
+.deformacionesA, .deformacionesB{
   display: flex;
-  gap: 20px;
+  gap: 1px;
+  align-self:baseline;
 }
 .tableDefor{
   border-collapse: collapse;
@@ -140,14 +144,15 @@ button:hover {
 .tableDefor th,
 .tableDefor td{
   border: 1px solid black;
-  width: 120px;
-  height: 15px;
+  width: 130px;
+  height: 25px;
   empty-cells: show;
   padding: 0;
 }
 
 .tableDefor tr{
   height: 20px;
+  border: 1px solid black;
 }
 
 .tableDefor input{
