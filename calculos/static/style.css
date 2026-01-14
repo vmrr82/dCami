@@ -1,169 +1,230 @@
-/* ====== RESET BÁSICO ====== */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-h4{
-  margin-top: 10px;
-  margin-bottom: 10px;
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root{
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --primary: #2563eb;
+  --primary-hover: #1d4ed8;
+  --shadow: 0 8px 20px rgba(0,0,0,.06);
+  --radius: 12px;
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  background: #f4f6f8;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
   padding: 20px;
 }
 
 header {
   text-align: center;
-  font-size: 1.4rem;
-  font-weight: bold;
-  margin-bottom: 25px;
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 18px;
 }
-.container-grid{
+
+
+/* nav simple */
+nav{
+  margin: 0 auto 20px auto;
+  max-width: 1200px;
+}
+nav li{
+  list-style: none;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ====== LAYOUT ====== */
+.container-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 30px;
-}
-label{
-  font-weight: bold;
+  gap: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 /* ====== GRID PRINCIPAL (Vehículo A | Vehículo B) ====== */
 .datosTecnicosVehiculos {
-  display: grid;
+  display: grid ;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  gap: 18px;
 }
 
-/* ====== TARJETAS DE VEHÍCULOS ====== */
+/* ====== TARJETAS ====== */
 .vehiculoA,
 .vehiculoB {
-  background: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
+  background: var(--card);
+  padding: 18px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
-/* Títulos */
 .titleVeh {
   text-align: center;
-  margin-bottom: 15px;
-  color: #333;
+  margin-bottom: 14px;
+  letter-spacing: .3px;
 }
 
-#caracter{
-
-  margin-bottom: 6px;
-  margin-top: 6px;
+#caracter {
+  margin: 10px 0 8px 0;
+  color: var(--muted);
+  font-weight: 700;
 }
 
-/* ====== FORMULARIO INTERNO (2 columnas por vehículo) ====== */
+/* ====== FORMULARIO INTERNO ====== */
 .formMain {
   display: flex;
-  gap: 20px;
+  gap: 18px;
+  margin-top: 8px;
 }
 
-/* Columnas internas */
 .formCol {
   flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-/* Inputs */
-.formCol label {
-  margin-top: 10px;
+/* Labels */
+label {
+  font-weight: 700;
   font-size: 0.9rem;
 }
 
-.formCol input,
-select {
-  padding: 6px;
-  margin-top: 4px;
+/* Inputs & selects */
+input[type="number"], select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  outline: none;
+  transition: border-color .12s ease, box-shadow .12s ease;
 }
 
-#anteriorA, #posteriorA, #anteriorB, #posteriorB{
-
-  width: 60px;
+input[type="number"]:focus, select:focus{
+  border-color: rgba(37,99,235,.65);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
 }
 
-.distribucion{
+/* pequeños */
+#anteriorA, #posteriorA, #anteriorB, #posteriorB {
+  width: 72px;
+}
 
+/* Distribución */
+.distribucion {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr; /* 3 columnas iguales */
-  gap: 30px;
-
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 14px;
+  align-items: center;
 }
-/* Botones */
+
+/* ====== BOTONES ====== */
 button {
-  margin-top: 15px;
-  padding: 8px;
-  background: #007bff;
+  margin-top: 14px;
+  padding: 10px 12px;
+  background: var(--primary);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
   cursor: pointer;
+  font-weight: 700;
+  transition: background .15s ease, transform .03s ease;
 }
 
-button:hover {
-  background: #0056b3;
+button:hover { background: var(--primary-hover); }
+button:active { transform: translateY(1px); }
+
+hr{
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 12px 0;
 }
 
-/* ====== RESPONSIVE (móvil) ====== */
-@media (max-width: 900px) {
-  .container-grid {
-    grid-template-columns: 1fr; /* A y B uno debajo del otro */
-  }
-
-  .formMain {
-    flex-direction: column; /* columnas internas apiladas */
-  }
+/* ====== SUFIJOS (kg / mm) ====== */
+.field.has-unit{
+  position: relative;
 }
-/*------------------------------------------------------------------------------------------*/
-/*MEDIDA DEFORMACIONES*/
-.medidasDeformaciones{
+
+.field.has-unit input{
+  padding-right: 54px; /* espacio para sufijo */
+}
+
+.field.has-unit .unit-suffix{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-weight: 800;
+  font-size: .85rem;
+  pointer-events: none;
+  user-select: none;
+  background: #fff;
+  padding-left: 6px;
+}
+
+/* ====== MEDIDAS DEFORMACIONES ====== */
+.medidasDeformaciones {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
+  gap: 18px;
 }
 
-.deformacionesA, .deformacionesB{
-  display: flex;
-  gap: 1px;
-  align-self:baseline;
+.deformacionesA, .deformacionesB {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  overflow: auto;
 }
-.tableDefor{
+
+.tableDefor {
+  width: 100%;
   border-collapse: collapse;
-  empty-cells: show;
   text-align: center;
+  min-width: 520px;
 }
 
 .tableDefor th,
-.tableDefor td{
-  border: 1px solid black;
-  width: 130px;
-  height: 25px;
-  empty-cells: show;
-  padding: 0;
+.tableDefor td {
+  border: 1px solid var(--border);
+  padding: 2px;
 }
 
-.tableDefor tr{
-  height: 20px;
-  border: 1px solid black;
+.tableDefor th{
+  background: #f8fafc;
+  font-weight: 800;
 }
 
-.tableDefor input{
+.tableDefor input {
   width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  box-sizing: border-box;
-  padding: 1px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 6px 8px;
 }
 
-#offsetLinea{
-  margin-top: 25px;
+.tableDefor input:focus{
+  border-color: rgba(37,99,235,.65);
+  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+  outline: none;
+}
+
+/* offsets */
+#offsetLinea { margin-top: 20px; }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .datosTecnicosVehiculos { grid-template-columns: 1fr; }
+  .formMain { flex-direction: column; }
+  .medidasDeformaciones { grid-template-columns: 1fr; }
 }

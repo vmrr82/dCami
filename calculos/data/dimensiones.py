@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-dataSetVehiculos = pd.read_csv('./data/cars-dataset.csv',
+dataSetVehiculos = pd.read_csv('calculos/data/cars-dataset.csv',
                     sep=',',              
                     quotechar='"',       
                     low_memory=False,
