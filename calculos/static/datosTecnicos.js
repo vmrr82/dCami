@@ -144,11 +144,25 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // BOTON CALCULAR CENTRO DE GRAVEDAD
+function calcularCentroAnteriorA() {
+    let batallaA = parseFloat(document.getElementById("batallaA").value) || 0;
+    let percentPA = parseFloat(document.getElementById("posteriorA").value) || 0;
+
+    document.getElementById("centroAnteriorA").value = (batallaA * percentPA) / 100;
+}
+
 function actualizarCentroFrontalA() {
     let centroAnterior = parseFloat(document.getElementById("centroAnteriorA").value) || 0;
     let volAnt = parseFloat(document.getElementById("volAntA").value) || 0;
 
     document.getElementById("centroFrontalA").value = centroAnterior + volAnt;
+}
+
+function calcularCentroAnteriorB() {
+    let batallaB = parseFloat(document.getElementById("batallaB").value) || 0;
+    let percentPB = parseFloat(document.getElementById("posteriorB").value) || 0;
+
+    document.getElementById("centroAnteriorB").value = (batallaB * percentPB) / 100;
 }
 
 function actualizarCentroFrontalB() {
@@ -158,36 +172,87 @@ function actualizarCentroFrontalB() {
     document.getElementById("centroFrontalB").value = centroAnterior + volAnt;
 }
 
+const input = document.getElementById("offsetA");
+const tooltip = document.getElementById("tooltipOffsetA");
+const inputB = document.getElementById("offsetB");
+const tooltipB = document.getElementById("tooltipOffsetB");
+
+input.addEventListener("mouseover", () => {
+    tooltip.style.display = "block";
+});
+
+input.addEventListener("mouseout", () => {
+    tooltip.style.display = "none";
+});
+
+inputB.addEventListener("mouseover", () => {
+    tooltipB.style.display = "block";
+});
+
+inputB.addEventListener("mouseout", () => {
+    tooltipB.style.display = "none";
+});
 
 // CAMPO ZW TABLA DE DEFORMACIONES-------------------------------
 function zw() {
-    let dc1 = parseFloat(document.getElementById("dc_1").value) || 0;
-    let dc2 = parseFloat(document.getElementById("dc_2").value) || 0;
-    let dc3 = parseFloat(document.getElementById("dc_3").value) || 0;
-    let dc4 = parseFloat(document.getElementById("dc_4").value) || 0;
-    let dc5 = parseFloat(document.getElementById("dc_5").value) || 0;
-    let dc6 = parseFloat(document.getElementById("dc_6").value) || 0;
-    let dc7 = parseFloat(document.getElementById("dc_7").value) || 0;
-    let dc8 = parseFloat(document.getElementById("dc_8").value) || 0;
-    let dc9 = parseFloat(document.getElementById("dc_9").value) || 0;
-    let dc10 = parseFloat(document.getElementById("dc_10").value) || 0;
-    let dc11 = parseFloat(document.getElementById("dc_10").value) || 0;
-    let dc12 = parseFloat(document.getElementById("dc_12").value) || 0;
-    let dc13 = parseFloat(document.getElementById("dc_13").value) || 0;
-    let dc14 = parseFloat(document.getElementById("dc_14").value) || 0;
+    const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+
+    // Leer dc_1 ... dc_14 en un array (índice 1..14)
+    const dc = Array.from({ length: 15 }, (_, i) => (i === 0 ? 0 : getNum(`dc_${i}`)));
+
+    // Calcular zw_2 ... zw_14 = dc_i - dc_(i-1)
+    for (let i = 2; i <= 14; i++) {
+        const zwEl = document.getElementById(`zw_${i}`);
+        if (zwEl) zwEl.value = dc[i] - dc[i - 1];
+    }
+}
 
 
-    document.getElementById("zw_2").value = dc2 - dc1;
-    document.getElementById("zw_3").value = dc3 - dc2;
-    document.getElementById("zw_4").value = dc4 - dc3;
-    document.getElementById("zw_5").value = dc5 - dc4;
-    document.getElementById("zw_6").value = dc6 - dc5;
-    document.getElementById("zw_7").value = dc7 - dc6;
-    document.getElementById("zw_8").value = dc8 - dc7;
-    document.getElementById("zw_9").value = dc9 - dc8;
-    document.getElementById("zw_10").value = dc10 - dc9;
-    document.getElementById("zw_11").value = dc11 - dc10;
-    document.getElementById("zw_12").value = dc12 - dc11;
-    document.getElementById("zw_13").value = dc13 - dc12;
-    document.getElementById("zw_14").value = dc14 - dc13;
+// CAMPO ZW TABLA DE DEFORMACIONES-------------------------------
+function zwB() {
+    const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+
+    const dc = Array.from({ length: 15 }, (_, i) => (i === 0 ? 0 : getNum(`dc2_${i}`)));
+
+    for (let i = 2; i <= 14; i++) {
+        const zwEl = document.getElementById(`zw2_${i}`);
+        if (zwEl) zwEl.value = dc[i] - dc[i - 1];
+    }
+}
+
+
+// AREA VEHÍCULO A
+
+function calcularAreaA() {
+    const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+
+    for (let i = 2; i <= 14; i++) {
+        const zw = getNum(`zw_${i}`);
+        const cPrev = getNum(`c_${i - 1}`);
+        const cAct = getNum(`c_${i}`);
+
+        const promedio = (cPrev + cAct) / 2;
+        const area = (zw * promedio) / 1000000;
+
+        const areaEl = document.getElementById(`area_${i}`);
+        if (areaEl) areaEl.value = area;
+    }
+}
+
+// AREA VEHÍCULO 2
+
+function calcularAreaB() {
+    const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+
+    for (let i = 2; i <= 14; i++) {
+        const zw = getNum(`zw2_${i}`);
+        const cPrev = getNum(`c2_${i - 1}`);
+        const cAct = getNum(`c2_${i}`);
+
+        const promedio = (cPrev + cAct) / 2;
+        const area = (zw * promedio) / 1000000;
+
+        const areaEl = document.getElementById(`area2_${i}`);
+        if (areaEl) areaEl.value = area;
+    }
 }
