@@ -156,3 +156,35 @@ function actualizarCentroFrontalB() {
 
     document.getElementById("centroFrontalB").value = centroAnterior + volAnt;
 }
+
+function zw() {
+    let dc1 = parseFloat(document.getElementById("dc_1").value) || 0;
+    let dc2 = parseFloat(document.getElementById("dc_2").value) || 0;
+    let dc3 = parseFloat(document.getElementById("dc_3").value) || 0;
+    let dc4 = parseFloat(document.getElementById("dc_4").value) || 0;
+    let dc5 = parseFloat(document.getElementById("dc_5").value) || 0;
+    let dc6 = parseFloat(document.getElementById("dc_6").value) || 0;
+    let dc7 = parseFloat(document.getElementById("dc_7").value) || 0;
+    let dc8 = parseFloat(document.getElementById("dc_8").value) || 0;
+    let dc9 = parseFloat(document.getElementById("dc_9").value) || 0;
+    let dc10 = parseFloat(document.getElementById("dc_10").value) || 0;
+    let dc11 = parseFloat(document.getElementById("dc_10").value) || 0;
+    let dc12 = parseFloat(document.getElementById("dc_12").value) || 0;
+    let dc13 = parseFloat(document.getElementById("dc_13").value) || 0;
+    let dc14 = parseFloat(document.getElementById("dc_14").value) || 0;
+
+
+    document.getElementById("zw_2").value = dc2 - dc1;
+    document.getElementById("zw_3").value = dc3 - dc2;
+    document.getElementById("zw_4").value = dc4 - dc3;
+    document.getElementById("zw_5").value = dc5 - dc4;
+    document.getElementById("zw_6").value = dc6 - dc5;
+    document.getElementById("zw_7").value = dc7 - dc6;
+    document.getElementById("zw_8").value = dc8 - dc7;
+    document.getElementById("zw_9").value = dc9 - dc8;
+    document.getElementById("zw_10").value = dc10 - dc9;
+    document.getElementById("zw_11").value = dc11 - dc10;
+    document.getElementById("zw_12").value = dc12 - dc11;
+    document.getElementById("zw_13").value = dc13 - dc12;
+    document.getElementById("zw_14").value = dc14 - dc13;
+}
