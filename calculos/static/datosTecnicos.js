@@ -91,6 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (posteriorInput.value) syncDesdePosterior();
 });
 
+
 // Calculo de distribución de Carga de vehículo B
 document.addEventListener("DOMContentLoaded", () => {
     const pesoInput = document.getElementById("pesoB");
@@ -142,7 +143,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (posteriorInput.value) syncDesdePosterior();
 });
 
-
+// BOTON CALCULAR CENTRO DE GRAVEDAD
 function actualizarCentroFrontalA() {
     let centroAnterior = parseFloat(document.getElementById("centroAnteriorA").value) || 0;
     let volAnt = parseFloat(document.getElementById("volAntA").value) || 0;
@@ -157,6 +158,8 @@ function actualizarCentroFrontalB() {
     document.getElementById("centroFrontalB").value = centroAnterior + volAnt;
 }
 
+
+// CAMPO ZW TABLA DE DEFORMACIONES-------------------------------
 function zw() {
     let dc1 = parseFloat(document.getElementById("dc_1").value) || 0;
     let dc2 = parseFloat(document.getElementById("dc_2").value) || 0;
