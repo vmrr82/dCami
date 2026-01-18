@@ -1,0 +1,585 @@
+
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='datosTecnicosStyle.css') }}">
+{% endblock %}
+{% block content %} 
+<header>Datos técnicos de los vehículos implicados</header>
+<div class="container-grid">
+    <div class="content">
+        <a name="tab1" id="tab1"></a>
+        <div class="datosTecnicosVehiculos">
+
+            <!-- ===================== VEHÍCULO A ===================== -->
+            <section class="vehiculoA">
+                <h2 class="titleVeh">VEHÍCULO A</h2>
+
+                <!-- Selección modelo A -->
+                <form method="POST" action="{{ url_for('datosTecnicos') }}">
+                    <label for="modelo_vehiculoA">Seleccione un modelo:</label><br><br>
+
+                    <select name="modelo_vehiculoA" id="modelo_vehiculoA" required>
+                        <option value="">-- Seleccione un modelo --</option>
+                        {% for x in listado %}
+                        <option value="{{ x }}" {% if x==select_modelA %}selected{% endif %}>{{ x }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="hidden" name="modelo_vehiculoB" value="{{ select_modelB or '' }}">
+
+                    <br><br>
+                    <button type="submit">Cargar Vehículo</button>
+                </form>
+
+                <hr style="margin-top: 10px;">
+
+                <!-- Editar/guardar A -->
+                <h3 id="caracter">Características:</h3>
+                <form method="POST" action="{{ url_for('guardar') }}">
+                    <input type="hidden" name="tipo" value="A">
+                    <input type="hidden" name="modelo_vehiculoA" value="{{ select_modelA or '' }}">
+
+                    <div class="formMain">
+                        <div class="formCol">
+                            <label for="pesoA">Masa (Kg):</label>
+                            <input type="number" id="pesoA" name="peso" value="{{ resultadoA.get('peso', 0) }}"
+                                required>
+
+                            <label for="alturaA">Altura (mm):</label>
+                            <input type="number" id="alturaA" name="altura"
+                                value="{{ resultadoA.altura if resultadoA else 0 }}" required>
+
+                            <label for="anchuraA">Anchura (mm):</label>
+                            <input type="number" id="anchuraA" name="anchura"
+                                value="{{ resultadoA.anchura if resultadoA else 0 }}" required>
+
+                            <label for="longitudA">Longitud (mm):</label>
+                            <input type="number" id="longitudA" name="longitud"
+                                value="{{ resultadoA.longitud if resultadoA else 0 }}" required>
+
+                            <label for="batallaA">Batalla (mm):</label>
+                            <input type="number" id="batallaA" name="batallaA"
+                                value="{{ resultadoA.batallaA if resultadoA else 0 }}"
+                                oninput="calcularCentroAnteriorA()" required>
+
+                            <label for="viaAntA">Vía Ant. (mm):</label>
+                            <input type="number" id="viaAntA" name="viaAntA"
+                                value="{{ resultadoA.viaAntA if resultadoA else 0 }}" required>
+
+                            <label for="viaPostA">Vía Post. (mm):</label>
+                            <input type="number" id="viaPostA" name="viaPostA"
+                                value="{{ resultadoA.viaPostA if resultadoA else 0 }}" required>
+
+                            <label for="volAntA">Vol Ant. (mm):</label>
+                            <input type="number" id="volAntA" name="volAntA" value="0"
+                                oninput="actualizarCentroFrontalA() ">
+
+                            <label for="volPostA">Vol Post. (mm):</label>
+                            <input type="number" id="volPostA" name="volPostA"
+                                value="{{ resultadoA.volPostA if resultadoA else 0 }}" required>
+                        </div>
+
+                        <div class="formCol">
+                            <h4>DISTRIBUCIÓN DE CARGA</h4>
+
+                            <div class="distribucion">
+                                <label style="padding-top: 1px;" for="anteriorA">Anterior:</label>
+                                <input type="number" id="anteriorA" name="anteriorA"
+                                    value="{{ resultadoA.get('anteriorA', 0) }}" required>
+
+                                <input type="number" id="pesoAnteriorA" name="pesoAnteriorA"
+                                    value="{{ (resultadoA.get('peso',0) * resultadoA.get('anteriorA',0) / 100) }}"
+                                    readonly>
+
+                                <label for="posteriorA">Posterior:</label>
+                                <input type="number" id="posteriorA" name="posteriorA"
+                                    value="{{ resultadoA.get('posteriorA', 0) }}" oninput="calcularCentroAnteriorA()"
+                                    required>
+
+                                <input type="number" id="pesoPosteriorA" name="pesoPosteriorA" value="0" readonly>
+                            </div>
+
+                            <button id="calcularDistribucion" type="button">Calcular</button>
+
+                            <h4 style="margin-top: 10px; margin-bottom: 10px;">CENTRO DE GRAVEDAD</h4>
+                            <label for="centroAnteriorA">Desde eje ant (CMFa):</label>
+                            <input type="number" id="centroAnteriorA" name="centroAnteriorA"
+                                placeholder="(Batalla + D.Carga Posterior) / 100" oninput="actualizarCentroFrontalA()">
+
+                            <label for="centroFrontalA">Desde el frontal:</label>
+                            <input type="number" id="centroFrontalA" name="centroFrontalA"
+                                placeholder="Desde Eje Anterior + Voladizo Anterior">
+
+                            <hr id="offsetLinea">
+
+                            <label for="offsetA">Offset deformación:</label>
+                            <div class="tooltip-container">
+                                <input type="number" id="offsetA" name="offsetA" value="0">
+                                <div class="tooltip" id="tooltipOffsetA">- Positiva: si c1 está a la derecha del
+                                    vértice
+                                    delantero
+                                    izquierdo<br>
+                                    - Negativa: si c1 está a la izquierda del vértice delantero izquierdo</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit">Guardar vehículo A</button>
+                </form>
+            </section>
+
+            <!-- ===================== VEHÍCULO B ===================== -->
+            <section class="vehiculoB">
+                <h2 class="titleVeh">VEHÍCULO B</h2>
+
+                <!-- Selección modelo B -->
+                <form method="POST" action="{{ url_for('datosTecnicos') }}">
+                    <label for="modelo_vehiculoB">Seleccione un modelo:</label><br><br>
+
+                    <select name="modelo_vehiculoB" id="modelo_vehiculoB" required>
+                        <option value="">-- Seleccione un modelo --</option>
+                        {% for x in listado %}
+                        <option value="{{ x }}" {% if x==select_modelB %}selected{% endif %}>{{ x }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <input type="hidden" name="modelo_vehiculoA" value="{{ select_modelA or '' }}">
+
+                    <br><br>
+                    <button type="submit">Cargar Vehículo</button>
+                </form>
+
+                <hr style="margin-top: 10px;">
+
+                <h3 id="caracter">Características:</h3>
+                <form method="POST" action="{{ url_for('guardar') }}">
+                    <input type="hidden" name="tipo" value="B">
+                    <input type="hidden" name="modelo_vehiculoB" value="{{ select_modelB or '' }}">
+
+                    <div class="formMain">
+                        <div class="formCol">
+                            <label for="pesoB">Masa (Kg):</label>
+                            <input type="number" id="pesoB" name="peso"
+                                value="{{ resultadoB.peso if resultadoB else 0 }}" required>
+
+                            <label for="alturaB">Altura (mm):</label>
+                            <input type="number" id="alturaB" name="altura"
+                                value="{{ resultadoB.altura if resultadoB else 0 }}" required>
+
+                            <label for="anchuraB">Anchura (mm):</label>
+                            <input type="number" id="anchuraB" name="anchura"
+                                value="{{ resultadoB.anchura if resultadoB else 0 }}" required>
+
+                            <label for="longitudB">Longitud (mm):</label>
+                            <input type="number" id="longitudB" name="longitud"
+                                value="{{ resultadoB.longitud if resultadoB else 0 }}" required>
+
+                            <label for="batallaB">Batalla (mm):</label>
+                            <input type="number" id="batallaB" name="batalla"
+                                value="{{ resultadoB.batallaB if resultadoB else 0 }}"
+                                oninput="calcularCentroAnteriorB()" required>
+
+                            <label for="viaAntB">Vía Ant. (mm):</label>
+                            <input type="number" id="viaAntB" name="viaAntB"
+                                value="{{ resultadoB.viaAntB if resultadoB else 0 }}" required>
+
+                            <label for="viaPostB">Vía Post. (mm):</label>
+                            <input type="number" id="viaPostB" name="viaPostB"
+                                value="{{ resultadoB.viaPostB if resultadoB else 0 }}" required>
+
+                            <label for="volAntB">Vol. Ant. (mm):</label>
+                            <input type="number" id="volAntB" name="volAntB" value="0"
+                                oninput="actualizarCentroFrontalB()">
+
+                            <label for="volPostB">Vol. Post. (mm):</label>
+                            <input type="number" id="volPostB" name="volPostB"
+                                value="{{ resultadoB.volPostB if resultadoB else 0 }}" required>
+                        </div>
+
+                        <div class="formCol">
+                            <h4>DISTRIBUCIÓN DE CARGA</h4>
+
+                            <div class="distribucion">
+                                <label for="anteriorB">Anterior:</label>
+                                <input type="number" step="1" id="anteriorB" name="anteriorB"
+                                    value="{{ resultadoB.get('anteriorB', 0)  }}" required>
+
+                                <input type="number" id="pesoAnteriorB" name="pesoAnteriorB"
+                                    value="{{ (resultadoB.get('peso',0) * resultadoB.get('anteriorB',0) / 100) }}"
+                                    readonly>
+
+                                <label for="posteriorB">Posterior:</label>
+                                <input type="number" id="posteriorB" name="posteriorB"
+                                    value="{{ resultadoB.get('posteriorB', 0) }}" oninput="calcularCentroAnteriorB()">
+
+                                <input type="number" id="pesoPosteriorB" name="pesoPosteriorB" value="0" readonly>
+                            </div>
+
+                            <button id="calcularDistribucionB" type="button">Calcular</button>
+
+                            <h4 style="margin-top: 10px; margin-bottom: 10px;">CENTRO DE GRAVEDAD</h4>
+                            <label for="centroAnteriorB">Desde eje ant (CMFa):</label>
+                            <input type="number" id="centroAnteriorB" name="centroAnteriorB"
+                                placeholder="(Batalla + D.Carga Posterior) / 100" oninput="actualizarCentroFrontalB()">
+
+                            <label for="centroFrontalB">Desde el frontal:</label>
+                            <input type="number" id="centroFrontalB" name="centroFrontalB"
+                                placeholder="Desde Eje Anterior + Voladizo Anterior">
+
+                            <hr id="offsetLinea">
+
+                            <label for="offsetB">Offset deformación:</label>
+                            <div class="tooltip-container">
+                                <input type="number" id="offsetB" name="offsetB" value="0">
+                                <div class="tooltip" id="tooltipOffsetB">- Positiva: si c1 está a la derecha del
+                                    vértice
+                                    delantero
+                                    izquierdo<br>- Negativa: si c1 está a la izquierda del vértice delantero
+                                    izquierdo
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit">Guardar vehículo B</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- ===================== MEDIDAS DEFORMACIONES ===================== -->
+        <div class="medidasDeformaciones">
+            <section class="deformacionesA">
+                <table class="tableDefor">
+                    <thead>
+                        <tr>
+                            <th style="width: 90px;"> </th>
+                            <th>c</th>
+                            <th>dc</th>
+                            <th>zw</th>
+                            <th>Área</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>medida 1</td>
+                            <td><input type="number" step="any" id="c_1" name="c_1" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_1" name="dc_1" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_1" name="zw_1"></td>
+                            <td><input type="number" step="any" id="area_1" name="area_1"></td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 2</td>
+                            <td><input type="number" step="any" id="c_2" name="c_2" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_2" name="dc_2" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_2" name="zw_2" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_2" name="area_2" oninput="calcularAreaA()"
+                                    readonly></td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 3</td>
+                            <td><input type="number" step="any" id="c_3" name="c_3" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_3" name="dc_3" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_3" name="zw_3" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_3" name="area_3" oninput="calcularAreaA()"
+                                    readonly></td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 4</td>
+                            <td><input type="number" step="any" id="c_4" name="c_4" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_4" name="dc_4" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_4" name="zw_4" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_4" name="area_4" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 5</td>
+                            <td><input type="number" step="any" id="c_5" name="c_5" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_5" name="dc_5" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_5" name="zw_5" oninput="zw(), calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_5" name="area_5" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 6</td>
+                            <td><input type="number" step="any" id="c_6" name="c_6" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_6" name="dc_6" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_6" name="zw_6" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_6" name="area_6" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 7</td>
+                            <td><input type="number" step="any" id="c_7" name="c_7" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_7" name="dc_7" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_7" name="zw_7" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_7" name="area_7" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 8</td>
+                            <td><input type="number" step="any" id="c_8" name="c_8" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_8" name="dc_8" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_8" name="zw_8" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_8" name="area_8" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 9</td>
+                            <td><input type="number" step="any" id="c_9" name="c_9" oninput="calcularAreaA()"></td>
+                            <td><input type="number" step="any" id="dc_9" name="dc_9" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_9" name="zw_9" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_9" name="area_9" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 10</td>
+                            <td><input type="number" step="any" id="c_10" name="c_10" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="dc_10" name="dc_10" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_10" name="zw_10" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_10" name="area_10" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 11</td>
+                            <td><input type="number" step="any" id="c_11" name="c_11" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="dc_11" name="dc_11" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_11" name="zw_11" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_11" name="area_11" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 12</td>
+                            <td><input type="number" step="any" id="c_12" name="c_12" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="dc_12" name="dc_12" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_12" name="zw_12" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_12" name="area_12" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 13</td>
+                            <td><input type="number" step="any" id="c_13" name="c_13" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="dc_13" name="dc_13" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_13" name="zw_13" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_13" name="area_13" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 14</td>
+                            <td><input type="number" step="any" id="c_14" name="c_14" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="dc_14" name="dc_14" oninput="zw()"></td>
+                            <td><input type="number" step="any" id="zw_14" name="zw_14" oninput="zw();calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area_14" name="area_14" oninput="calcularAreaA()">
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="deformacionesB">
+                <table class="tableDefor">
+                    <thead>
+                        <tr>
+                            <th style="width: 90px;"> </th>
+                            <th>c</th>
+                            <th>dc</th>
+                            <th>zw</th>
+                            <th>Área</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>medida 1</td>
+                            <td><input type="number" step="any" id="c2_1" name="c2_1" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_1" name="dc_1" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_1" name="zw_1" oninput="calcularAreaA()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_1" name="area2_1"></td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 2</td>
+                            <td><input type="number" step="any" id="c2_2" name="c2_2" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_2" name="dc_2" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_2" name="zw_2" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_2" name="area2_2" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 3</td>
+                            <td><input type="number" step="any" id="c2_3" name="c2_3" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_3" name="dc_3" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_3" name="zw_3" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_3" name="area2_3" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 4</td>
+                            <td><input type="number" step="any" id="c2_4" name="c2_4" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_4" name="dc_4" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_4" name="zw_4" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_4" name="area2_4" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 5</td>
+                            <td><input type="number" step="any" id="c2_5" name="c2_5" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_5" name="dc_5" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_5" name="zw_5" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_5" name="area2_5" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 6</td>
+                            <td><input type="number" step="any" id="c2_6" name="c2_6" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_6" name="dc_6" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_6" name="zw_6" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_6" name="area2_6" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 7</td>
+                            <td><input type="number" step="any" id="c2_7" name="c2_7" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_7" name="dc_7" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_7" name="zw_7" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_7" name="area2_7" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 8</td>
+                            <td><input type="number" step="any" id="c2_8" name="c2_8" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_8" name="dc_8" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_8" name="zw_8" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_8" name="area2_8" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 9</td>
+                            <td><input type="number" step="any" id="c2_9" name="c2_9" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_9" name="dc_9" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_9" name="zw_9" oninput="zwB();calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="area2_9" name="area2_9" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 10</td>
+                            <td><input type="number" step="any" id="c2_10" name="c2_10" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_10" name="dc_10" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_10" name="zw_10"
+                                    oninput="zwB();calcularAreaB()"></td>
+                            <td><input type="number" step="any" id="area2_10" name="area2_10" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 11</td>
+                            <td><input type="number" step="any" id="c2_11" name="c2_11" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_11" name="dc_11" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_11" name="zw_11"
+                                    oninput="zwB();calcularAreaB()"></td>
+                            <td><input type="number" step="any" id="area2_11" name="area2_11" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 12</td>
+                            <td><input type="number" step="any" id="c2_12" name="c2_12" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_12" name="dc_12" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_12" name="zw_12"
+                                    oninput="zwB();calcularAreaB()"></td>
+                            <td><input type="number" step="any" id="area2_12" name="area2_12" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 13</td>
+                            <td><input type="number" step="any" id="c2_13" name="c2_13" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_13" name="dc_13" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_13" name="zw_13" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="area2_13" name="area2_13" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>medida 14</td>
+                            <td><input type="number" step="any" id="c2_14" name="c2_14" oninput="calcularAreaB()">
+                            </td>
+                            <td><input type="number" step="any" id="dc2_14" name="dc_14" oninput="zwB()"></td>
+                            <td><input type="number" step="any" id="zw2_14" name="zw2_14"
+                                    oninput="zwB();calcularAreaB()"></td>
+                            <td><input type="number" step="any" id="area2_14" name="area2_14" oninput="calcularAreaB()">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>
+
+
+
+    
+    <script src="{{ url_for('static', filename='datosTecnicos.js') }}"></script>
+
+{% endblock %}
+

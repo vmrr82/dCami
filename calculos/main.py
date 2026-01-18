@@ -2,12 +2,18 @@ from flask import Flask, render_template, request, redirect, url_for
 from data.dimensiones import modelo_dimensiones, listado, actualizar_dimensiones
 
 app = Flask(__name__)
+
 @app.route("/")
 def home():
     return redirect(url_for("index"))
 
-@app.route("/index", methods=["GET", "POST"])
+
+@app.route("/index")
 def index():
+    return render_template("index.html")
+
+@app.route("/datosTecnicos", methods=["GET", "POST"])
+def datosTecnicos():
     modelos = listado()
 
     select_modelA = None
@@ -37,7 +43,7 @@ def index():
     pesoPosteriorA = (resultadoA["peso"] * resultadoA["posteriorA"] / 100) if (resultadoA["peso"] and resultadoA["posteriorA"]) else 0
     print(resultadoA)
     return render_template(
-        "index.html",
+        "datosTecnicos.html",
         listado=modelos,
         select_modelA=select_modelA,
         select_modelB=select_modelB,
