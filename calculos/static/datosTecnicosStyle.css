@@ -207,23 +207,24 @@ hr{
   overflow: auto;
 }
 
-.tableDefor {
+.tableDefor{
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
-  text-align: center;
-  min-width: 520px;
 }
 
 .tableDefor th,
-.tableDefor td {
-  border: 1px solid var(--border);
-  padding: 2px;
+.tableDefor td{
+  border: 1px solid #aaa;
+  padding: 4px;
+  text-align: center;
 }
 
 .tableDefor th{
   background: #f8fafc;
   font-weight: 800;
 }
+
 
 .tableDefor input {
   width: 100%;
@@ -237,6 +238,11 @@ hr{
   border-color: rgba(37,99,235,.65);
   box-shadow: 0 0 0 4px rgba(37,99,235,.12);
   outline: none;
+}
+
+.tableDefor tfoot{
+
+  background-color: rgb(185, 183, 183);
 }
 
 /* offsets */
