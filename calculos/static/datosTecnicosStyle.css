@@ -43,6 +43,7 @@ nav li{
 .container-grid {
   display: grid;
   grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 22px;
   max-width: 1200px;
   margin: 0 auto;
@@ -248,9 +249,35 @@ hr{
 /* offsets */
 #offsetLinea { margin-top: 20px; }
 
+
+.centroide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.centroideA, .centroideB {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 12px;
+  overflow: auto;
+}
+
+.coordenadasA{
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+
+
+
 /* ====== RESPONSIVE ====== */
 @media (max-width: 900px) {
   .datosTecnicosVehiculos { grid-template-columns: 1fr; }
   .formMain { flex-direction: column; }
   .medidasDeformaciones { grid-template-columns: 1fr; }
+  .centroide { grid-template-columns: 1fr; }
 }

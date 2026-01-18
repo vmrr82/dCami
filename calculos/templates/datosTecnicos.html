@@ -382,8 +382,8 @@
                             <td></td>
                             <td><input type="number" id="caverValue" name="caverValue" readonly></td>
                             <td></td>
-                            <td><input type="number" id="lValueA" name="lValueA" oninput="lValueASum()"></td>
-                            <td><input type="number" id="areaTotalValueA" name="areaTotalValueA" readonly></td>
+                            <td><input type="number" id="lValueA" name="lValueA" oninput="lValueASum();caverA()"></td>
+                            <td><input type="number" id="areaTotalValueA" name="areaTotalValueA" readonly oninput="caverA()"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -541,8 +541,8 @@
                             <td></td>
                             <td><input type="number" id="caverValueB" name="caverValueB" readonly></td>
                             <td></td>
-                            <td><input type="number" id="lValueB" name="lValueB" oninput="lValueBSum()"></td>
-                            <td><input type="number" id="areaTotalValueB" name="areaTotalValueB" readonly></td>
+                            <td><input type="number" id="lValueB" name="lValueB" oninput="lValueBSum();caverB()"></td>
+                            <td><input type="number" id="areaTotalValueB" name="areaTotalValueB" oninput="caverB()"></td>
                         </tr>
                         <tr>
                             <td></td>
@@ -554,6 +554,19 @@
                     </tfoot>
                 </table>
             </section>
+        </div>
+        <div class="centroide">
+            <section class="centroideA">
+                <h2 style="text-align: center;">Centroide A</h2>
+                <div class="coordenadasA">
+                    <table class="tablaAX"></table>
+                    <table class="tablaAY"></table>
+                </div>
+            </section>
+            <section class="centroideB">
+                <h2 style="text-align: center;">Centroide B</h2>
+            </section>
+
         </div>
     </div>
 </div>

@@ -247,7 +247,7 @@ function lValueASum() {
     }
 
     const lEl = document.getElementById("lValueA");
-    if (lEl) lEl.value = suma.toFixed(2);
+    if (lEl) lEl.value = suma.toFixed(1);
 
 }
 
@@ -262,7 +262,7 @@ function areaTotalASum() {
         suma += parseFloat(input.value) || 0;
     });
 
-    totalEl.value = suma.toFixed(2);
+    totalEl.value = suma.toFixed(3);
 
     caverA();
 }
@@ -307,7 +307,7 @@ function caverA() {
     const areaTotal = parseFloat(areaTotalEl.value) || 0;
     const L = parseFloat(lEl.value) || 0;
 
-    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed(2) : "0.00";
+    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed() : "0";
 
 
 }
@@ -326,7 +326,7 @@ function zwB() {
         const dcPrev = getNum(`dc2_${i - 1}`);
         const dcAct = getNum(`dc2_${i}`);
 
-        zwEl.value = (dcPrev + dcAct).toFixed(2);
+        zwEl.value = (dcAct - dcPrev);
     }
 
     lValueBSum(); // 
@@ -371,12 +371,15 @@ function calcularAreaB() {
         const area = (zwVal * promedio) / 1000000;
 
         const areaEl = document.getElementById(`area2_${i}`);
-        if (areaEl) areaEl.value = area;
+        
+        if (areaEl) areaEl.value = area.toFixed(3);
     }
     areaTotalBSum()
 }
 
 // ===================== CAVER B =====================
+
+
 function caverB() {
     const caverInput = document.getElementById("caverValueB");
     const areaTotalEl = document.getElementById("areaTotalValueB");
@@ -387,11 +390,10 @@ function caverB() {
     const areaTotal = parseFloat(areaTotalEl.value) || 0;
     const L = parseFloat(lEl.value) || 0;
 
-    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed(2) : "0.00";
+    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed() : "0";
 
 
 }
-
 // ===================== ÁREA TOTAL B =====================
 function areaTotalBSum() {
     const totalEl = document.getElementById("areaTotalValueB");
@@ -402,7 +404,7 @@ function areaTotalBSum() {
         suma += parseFloat(input.value) || 0;
     });
 
-    totalEl.value = suma.toFixed(4);
+    totalEl.value = suma.toFixed(3);
 
     caverB();
 }
