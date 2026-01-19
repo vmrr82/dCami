@@ -9,15 +9,15 @@
 body {
     font-family: Abril Fatface, Times New Roman, Times, serif;
     background: #f4f4f4;
-    color: #222;
+    color: #b9b6b6;
     height: 100vh;
     overflow: hidden;
 }
 
 /* ===== HEADER ===== */
 .app-header {
-    background: #666;
-    color: white;
+    background: #f4f4f4;
+    color: #1f2937;
     padding: 20px 15px;
     text-align: center;
     font-size: 22px;
@@ -26,13 +26,9 @@ body {
 /* ===== GRID LAYOUT ===== */
 .layout {
     height: calc(100vh - 75px);
-
     display: grid;
     grid-template-columns: 260px 1fr;
-    /* sidebar | contenido */
     grid-template-rows: 60px 1fr;
-    /* top-nav | iframe */
-
     grid-template-areas:
         "sidebar topnav"
         "sidebar iframe";
@@ -41,7 +37,7 @@ body {
 /* ===== SIDEBAR ===== */
 .sidebar {
     grid-area: sidebar;
-    background: #333;
+    background: #f4f4f4;
     padding: 18px 12px;
     display: flex;
     flex-direction: column;
@@ -49,7 +45,7 @@ body {
 }
 
 .sidebar h3 {
-    color: white;
+    color: #1f2937;
     margin-bottom: 8px;
     font-size: 18px;
 }
@@ -73,12 +69,12 @@ body {
 /* ===== TOP NAV (SOLO A LA DERECHA DEL SIDEBAR) ===== */
 .top-nav {
     grid-area: topnav;
-    background: #222;
+    background: #f4f4f4;
     display: flex;
     align-items: center;
     gap: 12px;
     padding: 0 16px;
-    border-bottom: 2px solid #111;
+    /*border-bottom: 2px solid #111;*/
 }
 
 .top-btn {

@@ -53,7 +53,6 @@ def datosTecnicos():
     )
 
 
-
 @app.route("/guardar", methods=["POST"])
 def guardar():
 

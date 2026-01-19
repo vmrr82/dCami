@@ -19,20 +19,16 @@
 
     <!-- SIDEBAR IZQUIERDA -->
     <aside class="sidebar">
-      <h3>Menú</h3>
-      <a class="side-btn" href="{{ url_for('index') }}" target="mainIframe">
-        Inicio
-      </a>
-      <a class="side-btn" href="{{ url_for('datosTecnicos') }}" target="mainIframe">
-        Datos técnicos
-      </a>
+      <a class="side-btn" href="{{ url_for('index') }}" target="mainIframe">Inicio</a>
+      <a class="side-btn">  Herramientas </a>
+      <a class="side-btn">  Enlaces </a>
+      <a class="side-btn">  Contacto </a>
 
 
     </aside>
 
     <!-- NAV HORIZONTAL (EMPIEZA DONDE TERMINA SIDEBAR) -->
     <nav class="top-nav">
-      <a class="top-btn" href="{{ url_for('index') }}" target="mainIframe">Inicio</a>
       <a class="top-btn" href="{{ url_for('datosTecnicos') }}" target="mainIframe">Datos técnicos</a>
 
     </nav>
