@@ -47,7 +47,7 @@ nav li{
 .container-grid {
   display: grid;
   grid-template-columns: 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: 1fr;
   gap: 22px;
   max-width: 1200px;
   margin: 0 auto;

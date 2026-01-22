@@ -270,28 +270,28 @@ function areaTotalASum() {
 
 // ===================== ÁREA VEHÍCULO A =====================
 function calcularAreaA() {
-  const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
+    const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
 
-  // area_1
-  const zw1 = getNum("zw_1");
-  const c1 = getNum("c_1");
-  const area1 = (zw1 * c1) / 1000000;
-  const area1El = document.getElementById("area_1");
-  if (area1El) area1El.value = area1.toFixed(3);
+    // area_1
+    const zw1 = getNum("zw_1");
+    const c1 = getNum("c_1");
+    const area1 = (zw1 * c1) / 1000000;
+    const area1El = document.getElementById("area_1");
+    if (area1El) area1El.value = area1.toFixed(3);
 
-  for (let i = 2; i <= 14; i++) {
-    const zwVal = getNum(`zw_${i}`);
-    const cPrev = getNum(`c_${i - 1}`);
-    const cAct = getNum(`c_${i}`);
+    for (let i = 2; i <= 14; i++) {
+        const zwVal = getNum(`zw_${i}`);
+        const cPrev = getNum(`c_${i - 1}`);
+        const cAct = getNum(`c_${i}`);
 
-    const promedio = (cPrev + cAct) / 2;
-    const area = (zwVal * promedio) / 1000000;
+        const promedio = (cPrev + cAct) / 2;
+        const area = (zwVal * promedio) / 1000000;
 
-    const areaEl = document.getElementById(`area_${i}`);
-    if (areaEl) areaEl.value = area.toFixed(3);
-  }
+        const areaEl = document.getElementById(`area_${i}`);
+        if (areaEl) areaEl.value = area.toFixed(3);
+    }
 
-  areaTotalASum();
+    areaTotalASum();
 }
 
 
@@ -333,6 +333,7 @@ function zwB() {
 }
 
 
+
 // ===================== L (suma zw) =====================
 function lValueBSum() {
     let suma = 0;
@@ -371,7 +372,7 @@ function calcularAreaB() {
         const area = (zwVal * promedio) / 1000000;
 
         const areaEl = document.getElementById(`area2_${i}`);
-        
+
         if (areaEl) areaEl.value = area.toFixed(3);
     }
     areaTotalBSum()
@@ -419,3 +420,81 @@ document.addEventListener("DOMContentLoaded", () => {
         zwB();
     }
 });
+
+//=============================== CENTROIDES ==================================
+
+function centroideAX() {
+    const numOrNull = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        const s = (el.value ?? "").trim();
+        if (s === "") return null;
+        const n = Number(s);
+        return Number.isFinite(n) ? n : null;
+    };
+
+
+    const out1 = document.getElementById("centAX_1");
+    const c2 = numOrNull("c_2");
+    if (out1) out1.value = (c2 == null ? "" : c2);
+
+    for (let i = 2; i <= 13; i++) {
+        const out = document.getElementById(`centAX_${i}`);
+        if (!out) continue;
+
+        const a = numOrNull(`c_${i - 1}`);
+        const b = numOrNull(`c_${i}`);
+
+        if (a == null || b == null) {
+            out.value = "";
+            continue;
+        }
+
+        const denom = 3 * (a + b);
+        if (denom === 0) {
+            out.value = "";
+            continue;
+        }
+
+        const val = (a * a + a * b + b * b) / denom;
+        out.value = val.toFixed(2);
+    }
+}
+
+function centroideBX() {
+    const numOrNull = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        const s = (el.value ?? "").trim();
+        if (s === "") return null;
+        const n = Number(s);
+        return Number.isFinite(n) ? n : null;
+    };
+
+
+    const out1 = document.getElementById("centBX_1");
+    const c2 = numOrNull("c2_2");
+    if (out1) out1.value = (c2 == null ? "" : c2);
+
+    for (let i = 2; i <= 13; i++) {
+        const out = document.getElementById(`centBX_${i}`);
+        if (!out) continue;
+
+        const a = numOrNull(`c2_${i - 1}`);
+        const b = numOrNull(`c2_${i}`);
+
+        if (a == null || b == null) {
+            out.value = "";
+            continue;
+        }
+
+        const denom = 3 * (a + b);
+        if (denom === 0) {
+            out.value = "";
+            continue;
+        }
+
+        const val = (a * a + a * b + b * b) / denom;
+        out.value = val.toFixed(2);
+    }
+}
