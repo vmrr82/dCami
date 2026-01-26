@@ -471,14 +471,14 @@ function centroideXArea() {
     for (let i = 1; i <= 13; i++) {
         const xEl = document.getElementById(`centAX_${i}`);
         const aEl = document.getElementById(`area_${i + 1}`);
-        const oEl = document.getElementById(`mm*Area_${i}`);
+        const oEl = document.getElementById(`mmxArea_${i}`);
 
         if (!xEl || !aEl || !oEl) {
             console.warn("Falta ID:", {
                 i,
                 centAX: `centAX_${i}`,
                 area: `area_${i + 1}`,
-                out: `mm*Area_${i}`,
+                out: `mmxArea_${i}`,
                 existeCentAX: !!xEl,
                 existeArea: !!aEl,
                 existeOut: !!oEl
@@ -501,7 +501,71 @@ function centroideXArea() {
 
 
 
+function centroideAY() {
+    const numOrNull = (id) => {
+        const el = document.getElementById(id);
+        if (!el) return null;
+        const s = (el.value ?? "").trim();
+        if (s === "") return null;
+        const n = Number(s);
+        return Number.isFinite(n) ? n : null;
+    };
 
+    for (let i = 1; i <= 13; i++) {
+        const out = document.getElementById(`centAY_${i}`); // yz1 = centAY_1
+        if (!out) continue;
+
+        const c1Val = numOrNull(`c_${i}`); // medida c2
+        const c2Val = numOrNull(`c_${i + 1}`); // medida c2
+        const zwVal = numOrNull(`zw_${i+1}`); // valor zw
+
+        if (c1Val == null || c2Val == null) {
+            out.value = "";
+            continue;
+        }
+
+        const denom = 3 * (c1Val + c2Val);
+        if (denom === 0) {
+            out.value = "";
+            continue;
+        }
+
+        const val = zwVal * (2*c1Val+c2Val) / denom;
+        out.value = val.toFixed(2);
+    }
+}
+
+function centroideYArea() {
+    for (let i = 1; i <= 13; i++) {
+        const xEl = document.getElementById(`centAY_${i}`);
+        const aEl = document.getElementById(`area_${i + 1}`);
+        const oEl = document.getElementById(`mmxAreaY_${i}`);
+
+        if (!xEl || !aEl || !oEl) {
+            console.warn("Falta ID:", {
+                i,
+                centAX: `centAY_${i}`,
+                area: `area_${i + 1}`,
+                out: `mmxAreaY_${i}`,
+                existeCentAX: !!xEl,
+                existeArea: !!aEl,
+                existeOut: !!oEl
+            });
+            continue;
+        }
+
+        // Bloquea edición del área (pero se sigue leyendo)
+        aEl.readOnly = true;
+
+        const x = Number(xEl.value) || 0;
+        const area = Number(aEl.value) || 0;
+
+        const resultado = x * area;
+
+        // toFixed devuelve string; si quieres 2 decimales:
+        oEl.value = resultado.toFixed(2);
+    }
+}
 
 //===============================CENTROIDE VEHÍCULO B================================
 function centroideBX() {
@@ -543,11 +607,17 @@ function centroideBX() {
 }
 
 
+
+
+
+//=========================Botón totales Centroide=============================
 function calcularATotales() {
     lValueASum();
     areaTotalASum();
     centroideAX();
-    centroideXArea()
+    centroideXArea();
+    centroideAY();
+    centroideYArea();
 }
 
 document.getElementById("calcularZW").addEventListener("click", calcularATotales);
