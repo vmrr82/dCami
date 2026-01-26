@@ -101,12 +101,15 @@
 
                             <h4 style="margin-top: 10px; margin-bottom: 10px;">CENTRO DE GRAVEDAD</h4>
                             <label for="centroAnteriorA">Desde eje ant (CMFa):</label>
-                            <input type="number" id="centroAnteriorA" name="centroAnteriorA"
-                                placeholder="(Batalla + D.Carga Posterior) / 100" oninput="actualizarCentroFrontalA()">
+
+                            <input type="number" id="centroAnteriorA" name="centroAnteriorA" 
+                                placeholder="(Batalla * D.Carga Posterior) / 100">
 
                             <label for="centroFrontalA">Desde el frontal:</label>
                             <input type="number" id="centroFrontalA" name="centroFrontalA"
                                 placeholder="Desde Eje Anterior + Voladizo Anterior">
+                            
+                            <button id="calcularGravedadA" onclick=calcularCentroGravedadA() type="button">Actualizar</button>
 
                             <hr id="offsetLinea">
 
@@ -122,7 +125,7 @@
                         </div>
                     </div>
 
-                    <button type="submit">Guardar vehículo A</button>
+                    <!--<button type="submit">Guardar vehículo A</button>-->
                 </form>
             </section>
 
@@ -223,6 +226,8 @@
                             <label for="centroFrontalB">Desde el frontal:</label>
                             <input type="number" id="centroFrontalB" name="centroFrontalB"
                                 placeholder="Desde Eje Anterior + Voladizo Anterior">
+                            
+                            <button id="calcularDistribucionB" type="button">Actualizar</button>
 
                             <hr id="offsetLinea">
 
@@ -239,7 +244,7 @@
                         </div>
                     </div>
 
-                    <button type="submit">Guardar vehículo B</button>
+                    <!--<button type="submit">Guardar vehículo B</button>-->
                 </form>
             </section>
         </div>
@@ -272,141 +277,122 @@
                             <tr>
                                 <td>medida 1</td>
                                 <td><input type="number" step="any" id="c_1" name="c_1"oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_1" name="dc_1" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_1" name="zw_1"></td>
-                                <td><input type="number" step="any" id="area_1" name="area_1" readonly></td>
+                                <td><input type="number" step="any" id="dc_1" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_1" name="zw_1" value="0" readonly></td>
+                                <td><input type="number" step="any" id="area_1" name="area_1" value="0" readonly></td>
                             </tr>
 
                             <tr>
                                 <td>medida 2</td>
-                                <td><input type="number" step="any" id="c_2" name="c_2"
-                                        oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_2" name="dc_2" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_2" name="zw_2" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_2" name="area_2" readonly></td>
+                                <td><input type="number" step="any" id="c_2" name="c_2" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_2" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_2" name="zw_2" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_2" name="area_2"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 3</td>
                                 <td><input type="number" step="any" id="c_3" name="c_3" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_3" name="dc_3" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_3" name="zw_3" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_3" name="area_3" readonly></td>
+                                <td><input type="number" step="any" id="dc_3" name="dc_3" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_3" name="zw_3" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_3" name="area_3"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 4</td>
                                 <td><input type="number" step="any" id="c_4" name="c_4" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_4" name="dc_4" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_4" name="zw_4" oninput="calcularAreaA()">
-                                </td>
+                                <td><input type="number" step="any" id="dc_4" name="dc_4" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_4" name="zw_4" oninput="calcularAreaA();centroideXArea()"></td>
                                 <td><input type="number" step="any" id="area_4" name="area_4" readonly></td>
                             </tr>
 
                             <tr>
                                 <td>medida 5</td>
                                 <td><input type="number" step="any" id="c_5" name="c_5" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_5" name="dc_5" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_5" name="zw_5" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_5" name="area_5" readonly> </td>
+                                <td><input type="number" step="any" id="dc_5" name="dc_5" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_5" name="zw_5" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_5" name="area_5"> </td>
                             </tr>
 
                             <tr>
                                 <td>medida 6</td>
                                 <td><input type="number" step="any" id="c_6" name="c_6" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_6" name="dc_6" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_6" name="zw_6" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_6" name="area_6" readonly></td>
+                                <td><input type="number" step="any" id="dc_6" name="dc_6" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_6" name="zw_6" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_6" name="area_6"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 7</td>
                                 <td><input type="number" step="any" id="c_7" name="c_7" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_7" name="dc_7" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_7" name="zw_7" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_7" name="area_7" readonly></td>
+                                <td><input type="number" step="any" id="dc_7" name="dc_7" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_7" name="zw_7" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_7" name="area_7"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 8</td>
                                 <td><input type="number" step="any" id="c_8" name="c_8" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_8" name="dc_8" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_8" name="zw_8" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_8" name="area_8" readonly></td>
+                                <td><input type="number" step="any" id="dc_8" name="dc_8" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_8" name="zw_8" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_8" name="area_8"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 9</td>
                                 <td><input type="number" step="any" id="c_9" name="c_9" oninput="calcularAreaA();centroideAX()"></td>
-                                <td><input type="number" step="any" id="dc_9" name="dc_9" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_9" name="zw_9" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_9" name="area_9" readonly></td>
+                                <td><input type="number" step="any" id="dc_9" name="dc_9" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_9" name="zw_9" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_9" name="area_9"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 10</td>
-                                <td><input type="number" step="any" id="c_10" name="c_10" oninput="calcularAreaA();centroideAX()">
-                                </td>
-                                <td><input type="number" step="any" id="dc_10" name="dc_10" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_10" name="zw_10" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_10" name="area_10" readonly></td>
+                                <td><input type="number" step="any" id="c_10" name="c_10" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_10" name="dc_10" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_10" name="zw_10" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_10" name="area_10"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 11</td>
-                                <td><input type="number" step="any" id="c_11" name="c_11" oninput="calcularAreaA();centroideAX()">
-                                </td>
-                                <td><input type="number" step="any" id="dc_11" name="dc_11" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_11" name="zw_11" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_11" name="area_11" readonly></td>
+                                <td><input type="number" step="any" id="c_11" name="c_11" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_11" name="dc_11" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_11" name="zw_11" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_11" name="area_11"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 12</td>
-                                <td><input type="number" step="any" id="c_12" name="c_12" oninput="calcularAreaA();centroideAX()">
-                                </td>
-                                <td><input type="number" step="any" id="dc_12" name="dc_12" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_12" name="zw_12" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_12" name="area_12" readonly></td>
+                                <td><input type="number" step="any" id="c_12" name="c_12" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_12" name="dc_12" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_12" name="zw_12" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_12" name="area_12"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 13</td>
-                                <td><input type="number" step="any" id="c_13" name="c_13" oninput="calcularAreaA();centroideAX()">
-                                </td>
-                                <td><input type="number" step="any" id="dc_13" name="dc_13" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_13" name="zw_13" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_13" name="area_13" readonly></td>
+                                <td><input type="number" step="any" id="c_13" name="c_13" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_13" name="dc_13" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_13" name="zw_13" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_13" name="area_13"></td>
                             </tr>
 
                             <tr>
                                 <td>medida 14</td>
-                                <td><input type="number" step="any" id="c_14" name="c_14" oninput="calcularAreaA();centroideAX()">
-                                </td>
-                                <td><input type="number" step="any" id="dc_14" name="dc_14" oninput="zw()"></td>
-                                <td><input type="number" step="any" id="zw_14" name="zw_14" oninput="calcularAreaA()">
-                                </td>
-                                <td><input type="number" step="any" id="area_14" name="area_14" readonly></td>
+                                <td><input type="number" step="any" id="c_14" name="c_14" oninput="calcularAreaA();centroideAX()"></td>
+                                <td><input type="number" step="any" id="dc_14" name="dc_14" oninput="zw(); calcularAreaA(); centroideXArea()"></td>
+                                <td><input type="number" step="any" id="zw_14" name="zw_14" oninput="calcularAreaA();centroideXArea()"></td>
+                                <td><input type="number" step="any" id="area_14" name="area_14"></td>
                             </tr>
                         </tbody>
                         <tfoot>
                             <tr>
-                                <td></td>
+                                <td><button id="calcularZW" onclick="lValueASum();caverA();areaTotalASum()">Calcular</button></td>
                                 <td><input type="number" id="caverValue" name="caverValue" readonly></td>
                                 <td></td>
-                                <td><input type="number" id="lValueA" name="lValueA" oninput="lValueASum();caverA()"></td>
-                                <td><input type="number" id="areaTotalValueA" name="areaTotalValueA" readonly oninput="caverA()"></td>
+                                <td><input type="number" id="lValueA" name="lValueA"></td>
+                                <td><input type="number" id="areaTotalValueA" name="areaTotalValueA" readonly></td>
                             </tr>
                             <tr>
                                 <td></td>
@@ -630,68 +616,68 @@
                                 <tbody>
                                     <tr>
                                         <td>xz1</td>
-                                        <td><input type="number" id="centAX_1" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_1" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_1" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz2</td>
-                                        <td><input type="number" id="centAX_2" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_2" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_2" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz3</td>
-                                        <td><input type="number" id="centAX_3" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_3" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_3" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz4</td>
-                                        <td><input type="number" id="centAX_4" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_4" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_4" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz5</td>
-                                        <td><input type="number" id="centAX_5" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_5" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_5" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz6</td>
-                                        <td><input type="number" id="centAX_6" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_6" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_6" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz7</td>
-                                        <td><input type="number" id="centAX_7" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_7" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_7" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz8</td>
-                                        <td><input type="number" id="centAX_8" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_8" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_8" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz9</td>
-                                        <td><input type="number" id="centAX_9" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_9" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_9" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz10</td>
-                                        <td><input type="number" id="centAX_10" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_10" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_10" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz11</td>
-                                        <td><input type="number" id="centAX_11" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_11" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_11" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz12</td>
-                                        <td><input type="number" id="centAX_12" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_12" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_12" readonly></td>
                                     </tr>
                                     <tr>
                                         <td>xz13</td>
-                                        <td><input type="number" id="centAX_13" readonly></td>
-                                        <td>3</td>
+                                        <td><input type="number" id="centAX_13" oninput="centroideXArea()"></td>
+                                        <td><input type="number" id="mm*Area_13" readonly></td>
                                     </tr>
                                 </tbody>
                             </table>
