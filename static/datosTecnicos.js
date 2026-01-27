@@ -230,6 +230,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 });
 
+// ===================== CAVER A =====================
+function caverA() {
+    const caverInput = document.getElementById("caverValue");
+    const areaTotalEl = document.getElementById("areaTotalValueA");
+    const lEl = document.getElementById("lValueA");
+
+    if (!caverInput || !areaTotalEl || !lEl) return;
+
+    const areaTotal = parseFloat(areaTotalEl.value) || 0;
+    const L = parseFloat(lEl.value) || 0;
+
+    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed() : "0";
+
+
+}
+
 // ===================== ZW VEHÍCULO A =====================
 function zw() {
     const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
@@ -265,26 +281,6 @@ function lValueASum() {
 }
 
 
-
-
-
-
-// ===================== ÁREA TOTAL A =====================
-function areaTotalASum() {
-    const totalEl = document.getElementById("areaTotalValueA");
-    if (!totalEl) return;
-
-    let suma = 0;
-    document.querySelectorAll("input[id^='area_']").forEach((input) => {
-        suma += parseFloat(input.value) || 0;
-    });
-
-    totalEl.value = suma.toFixed(2);
-
-    caverA();
-}
-
-
 // ===================== ÁREA VEHÍCULO A =====================
 function calcularAreaA() {
     const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
@@ -313,11 +309,28 @@ function calcularAreaA() {
 
 
 
-// ===================== CAVER A =====================
-function caverA() {
-    const caverInput = document.getElementById("caverValue");
-    const areaTotalEl = document.getElementById("areaTotalValueA");
-    const lEl = document.getElementById("lValueA");
+// ===================== ÁREA TOTAL A =====================
+function areaTotalASum() {
+    const totalEl = document.getElementById("areaTotalValueA");
+    if (!totalEl) return;
+
+    let suma = 0;
+    document.querySelectorAll("input[id^='area_']").forEach((input) => {
+        suma += parseFloat(input.value) || 0;
+    });
+
+    totalEl.value = suma.toFixed(2);
+
+    caverA();
+}
+
+// ===================== CAVER B =====================
+
+
+function caverB() {
+    const caverInput = document.getElementById("caverValueB");
+    const areaTotalEl = document.getElementById("areaTotalValueB");
+    const lEl = document.getElementById("lValueB");
 
     if (!caverInput || !areaTotalEl || !lEl) return;
 
@@ -328,13 +341,12 @@ function caverA() {
 
 
 }
-
 // ===================== ZW VEHÍCULO B =====================
 function zwB() {
     const getNum = (id) => parseFloat(document.getElementById(id)?.value) || 0;
 
     const zw1 = document.getElementById("zw2_1");
-    if (zw1) zw1.value = getNum("dc2_1").toFixed(2);
+    if (zw1) zw1.value = getNum("dc2_1");
 
     for (let i = 2; i <= 14; i++) {
         const zwEl = document.getElementById(`zw2_${i}`);
@@ -395,23 +407,7 @@ function calcularAreaB() {
     areaTotalBSum()
 }
 
-// ===================== CAVER B =====================
 
-
-function caverB() {
-    const caverInput = document.getElementById("caverValueB");
-    const areaTotalEl = document.getElementById("areaTotalValueB");
-    const lEl = document.getElementById("lValueB");
-
-    if (!caverInput || !areaTotalEl || !lEl) return;
-
-    const areaTotal = parseFloat(areaTotalEl.value) || 0;
-    const L = parseFloat(lEl.value) || 0;
-
-    caverInput.value = (L > 0) ? ((areaTotal / L) * 1000000).toFixed() : "0";
-
-
-}
 // ===================== ÁREA TOTAL B =====================
 function areaTotalBSum() {
     const totalEl = document.getElementById("areaTotalValueB");
