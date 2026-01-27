@@ -1,7 +1,11 @@
 import pandas as pd
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent   # .../calculos/data
+CSV_PATH = BASE_DIR / "cars-dataset.csv"
 
-dataSetVehiculos = pd.read_csv('data/cars-dataset.csv',
+dataSetVehiculos = pd.read_csv(
+                    CSV_PATH,
                     sep=',',              
                     quotechar='"',       
                     low_memory=False,
