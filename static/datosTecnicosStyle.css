@@ -1,299 +1,385 @@
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
+/* =========================
+   RESET + VARIABLES
+   ========================= */
+*{ box-sizing:border-box; margin:0; padding:0; }
 
 :root{
-  --bg: #f4f6f8;
+  --bg: #f6f7fb;
   --card: #ffffff;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --border: #e5e7eb;
-  --primary: #2563eb;
-  --primary-hover: #1d4ed8;
-  --shadow: 0 8px 20px rgba(0,0,0,.06);
-  --radius: 12px;
+  --text: #111827;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+
+  --primary:#2563eb;
+  --primary-hover:#1d4ed8;
+
+  --shadow: 0 10px 26px rgba(17,24,39,.08);
+  --shadow-soft: 0 6px 16px rgba(17,24,39,.06);
+  --radius: 14px;
+
+  --focus: 0 0 0 4px rgba(37,99,235,.16);
 }
 
-body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
-  background: var(--bg);
+/* =========================
+   BASE
+   ========================= */
+body{
+  font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial,Helvetica,sans-serif;
+  background: radial-gradient(1200px 500px at 50% -100px, rgba(37,99,235,.10), transparent 60%),
+              linear-gradient(180deg, #f7f8fd 0%, var(--bg) 60%, #f3f5fa 100%);
   color: var(--text);
   padding: 20px;
+  line-height: 1.25;
 }
 
-header {
-  text-align: center;
-  font-size: 1.35rem;
-  font-weight: 800;
+header{
+  text-align:center;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: .2px;
   margin-bottom: 18px;
+  color: #0f172a;
 }
 
+h2, h3, h4{ color:#0f172a; }
 h4{
-  text-align: center;
-  text-decoration: underline;
+  text-align:center;
+  text-decoration: none;
   padding-bottom: 10px;
+  font-weight: 900;
+  letter-spacing: .2px;
 }
+h4::after{
+  content:"";
+  display:block;
+  width: 80px;
+  height: 3px;
+  margin: 8px auto 0 auto;
+  border-radius: 999px;
+  background: rgba(37,99,235,.35);
+}
+
 /* nav simple */
 nav{
-  margin: 0 auto 20px auto;
+  margin: 0 auto 18px auto;
   max-width: 1200px;
+  background: rgba(255,255,255,.7);
+  border: 1px solid rgba(229,231,235,.9);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 10px 12px;
+  backdrop-filter: blur(6px);
 }
 nav li{
-  list-style: none;
-  color: var(--muted);
-  font-weight: 600;
-}
-
-/* ====== LAYOUT ====== */
-.container-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: 1fr;
-  gap: 22px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-/* ====== GRID PRINCIPAL (Vehículo A | Vehículo B) ====== */
-.datosTecnicosVehiculos {
-  display: grid ;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px;
-}
-
-/* ====== TARJETAS ====== */
-.vehiculoA,
-.vehiculoB {
-  background: var(--card);
-  padding: 18px;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-}
-
-.titleVeh {
-  text-align: center;
-  margin-bottom: 14px;
-  letter-spacing: .3px;
-}
-
-#caracter {
-  margin: 10px 0 8px 0;
+  list-style:none;
   color: var(--muted);
   font-weight: 700;
+  font-size: .92rem;
 }
 
-/* ====== FORMULARIO INTERNO ====== */
-.formMain {
-  display: flex;
-  gap: 18px;
-  margin-top: 8px;
-}
-
-.formCol {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Labels */
-label {
-  font-weight: 700;
-  font-size: 0.9rem;
-}
-
-/* Inputs & selects */
-input[type="number"], select {
-  width: 100%;
-  padding: 10px 12px;
-  margin-top: 6px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #fff;
-  outline: none;
-  transition: border-color .12s ease, box-shadow .12s ease;
-}
-
-input[type="number"]:focus, select:focus{
-  border-color: rgba(37,99,235,.65);
-  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
-}
-
-/* pequeños */
-#anteriorA, #posteriorA, #anteriorB, #posteriorB {
-  width: 72px;
-}
-
-/* Distribución */
-.distribucion {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 14px;
-  align-items: center;
-}
-
-/* ====== BOTONES ====== */
-button {
-  margin-top: 14px;
-  padding: 10px 12px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 700;
-  transition: background .15s ease, transform .03s ease;
-}
-
-button:hover { background: var(--primary-hover); }
-button:active { transform: translateY(1px); }
-
-hr{
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 12px 0;
-}
-
-/* ====== SUFIJOS (kg / mm) ====== */
 .field.has-unit{
   position: relative;
 }
 
 .field.has-unit input{
-  padding-right: 54px; /* espacio para sufijo */
+  padding-right: 35px; /* espacio para "mm" */
 }
 
-.field.has-unit .unit-suffix{
+.field.has-unit::after{
+  content: attr(data-unit);
   position: absolute;
-  right: 12px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--muted);
-  font-weight: 800;
-  font-size: .85rem;
+  font-weight: 900;
+  font-size: .75rem;
+  color: #6b7280;
   pointer-events: none;
   user-select: none;
-  background: #fff;
-  padding-left: 6px;
 }
 
+/* =========================
+   LAYOUT
+   ========================= */
+.container-grid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 22px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 4 filas: 1 datos técnicos, 2 deformaciones, 3 centroide, 4 PDOF */
+.content{
+  display:grid;
+  grid-template-rows: auto auto auto auto;
+  gap: 20px;
+}
+
+/* =========================
+   SECCIONES (ESTILO CARD)
+   ========================= */
+.datosTecnicosVehiculos,
+.medidasDeformaciones,
+.mainCentroide,
+.mainPDOF{
+  background: rgba(255,255,255,.72);
+  border: 1px solid rgba(229,231,235,.95);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  padding: 14px;
+  backdrop-filter: blur(6px);
+}
+
+/* =========================
+   FILA 1: DATOS TÉCNICOS (A | B)
+   ========================= */
+.datosTecnicosVehiculos{
+  grid-row: 1;
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  align-items: start;
+}
+
+.vehiculoA,
+.vehiculoB{
+  background: var(--card);
+  padding: 18px;
+  border-radius: calc(var(--radius) - 2px);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+/* Cabecera de tarjeta */
+.titleVeh{
+  text-align:center;
+  margin-bottom: 12px;
+  letter-spacing: .4px;
+  font-weight: 1000;
+  font-size: 1.05rem;
+}
+#caracter{
+  margin: 10px 0 8px 0;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+/* =========================
+   FORMULARIOS
+   ========================= */
+.formMain{
+  display:flex;
+  gap: 18px;
+  margin-top: 10px;
+}
+.formCol{
+  flex:1;
+  display:flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Labels */
+label{
+  font-weight: 800;
+  font-size: .9rem;
+  color: #111827;
+}
+
+/* Inputs & selects */
+input[type="number"],
+select{
+  width:100%;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 12px;
+  border: 1px solid rgba(229,231,235,1);
+  background: #fff;
+  outline: none;
+  transition: border-color .12s ease, box-shadow .12s ease, transform .05s ease;
+}
+input[type="number"]:focus,
+select:focus{
+  border-color: rgba(37,99,235,.75);
+  box-shadow: var(--focus);
+}
+input[readonly]{
+  background: #f8fafc;
+  color: #334155;
+}
+
+/* pequeños */
+#anteriorA,#posteriorA,#anteriorB,#posteriorB,#pesoAnteriorA,#pesoAnteriorB{ width: 90px; }
+
+/* Distribución */
+.distribucion{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Separadores */
+hr{
+  border: none;
+  border-top: 1px solid rgba(229,231,235,1);
+  margin: 12px 0;
+}
+
+/* =========================
+   BOTONES
+   ========================= */
+button{
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(37,99,235,1), rgba(29,78,216,1));
+  color: #fff;
+  border: 1px solid rgba(29,78,216,.2);
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 900;
+  letter-spacing: .2px;
+  transition: transform .06s ease, filter .15s ease, box-shadow .15s ease;
+  box-shadow: 0 8px 18px rgba(37,99,235,.18);
+}
+button:hover{
+  filter: brightness(1.03);
+  box-shadow: 0 10px 22px rgba(37,99,235,.22);
+}
+button:active{ transform: translateY(1px); }
+
+/* =========================
+   TOOLTIP
+   ========================= */
 .tooltip-container{
   position: relative;
   display: inline-block;
+  width: 100%;
 }
-
-.tooltip{
-  position: absolute;
-  top: -35px;           /* arriba del input */
-  left: 0;
-  background: #333;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 13px;
-  white-space: nowrap;
-  display: none;
+.tooltip-text{
+  visibility:hidden;
+  width: max-content;
+  max-width: 280px;
+  background-color: rgba(15,23,42,.95);
+  color:#fff;
+  text-align:center;
+  border-radius: 10px;
+  padding: 8px 10px;
+  position:absolute;
   z-index: 10;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity:0;
+  transition: opacity .18s ease, transform .18s ease;
+  font-size: 13px;
+  line-height: 1.2;
+  box-shadow: 0 10px 22px rgba(0,0,0,.22);
+}
+.tooltip-container:hover .tooltip-text{
+  visibility: visible;
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
 }
 
-
-/* ====== MEDIDAS DEFORMACIONES ====== */
-.medidasDeformaciones {
-  display: grid;
-  grid-template-rows: 1fr;
-  gap: 18px;
-  padding-top: 10px;
+/* =========================
+   FILA 2: DEFORMACIONES
+   ========================= */
+.medidasDeformaciones{
+  grid-row: 2;
+  padding-top: 14px;
+}
+.h2Deformaciones{
+  text-align:center;
+  padding: 10px 12px;
+  background: linear-gradient(180deg, rgba(37,99,235,.10), rgba(37,99,235,.05));
+  border-radius: 12px;
+  border: 1px solid rgba(37,99,235,.14);
+  margin-bottom: 14px;
 }
 .mainDeformaciones{
-
-  display: grid;
+  display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
-  background-color: #ffffff ;
 }
 
-.h2Deformaciones{
-  
-  text-align: center;
-  height: 50px;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background: #ffffff;
-  border-radius: 12px;
-
-}
-
-.deformacionesA, .deformacionesB {
-
+.deformacionesA,
+.deformacionesB{
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 10px;
+  padding: 12px;
   overflow: auto;
 }
 
+/* Tabla */
 .tabla{
-
+  width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
+  border-radius: 12px;
+  overflow: hidden;
 }
-
 .tabla th,
 .tabla td,
-.tabla tfoot {
-  border: 1px solid #aaa;
-  padding: 4px;
+.tabla tfoot{
+  border: 1px solid rgba(148,163,184,.55);
+  padding: 6px;
   text-align: center;
+  font-size: .92rem;
 }
-
 .tabla th{
   background: #f8fafc;
-  font-weight:bold ;
+  font-weight: 900;
+  color: #0f172a;
+}
+.tabla tbody tr:nth-child(even) td{
+  background: #fbfdff;
 }
 
-
-.tabla input {
-  width: 100%;
+.tabla input{
+  width:100%;
   height: 34px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid rgba(229,231,235,1);
+  border-radius: 10px;
   padding: 6px 8px;
+  background: #fff;
 }
-
 .tabla input:focus{
-  border-color: rgba(37,99,235,.65);
-  box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+  border-color: rgba(37,99,235,.75);
+  box-shadow: var(--focus);
   outline: none;
 }
 
 .tabla tfoot{
-
-  background-color: rgb(185, 183, 183);
+  background: #eef2ff;
+  font-weight: 800;
+}
+.tabla tfoot td{
+  background: #eef2ff;
 }
 
 /* offsets */
-#offsetLinea { margin-top: 20px; }
+#offsetLinea{ margin-top: 18px; }
 
+/* =========================
+   FILA 3: CENTROIDE
+   ========================= */
 .mainCentroide{
-
-  display: grid;
-  grid-template-rows: 1fr;
-  gap: 18px;
-  background-color: #ffffff ;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  height: 50px;
+  grid-row: 3;
+  padding-top: 14px;
 }
-
-.centroide {
-  display: grid;
+.centroide{
+  display:grid;
   grid-template-columns: 1fr 1fr;
   gap: 18px;
 }
 
-.centroideA, .centroideB {
-  display: grid;
-  grid-template-rows: 1fr;
+.centroideA,
+.centroideB{
+  display:grid;
   grid-template-columns: 1fr 1fr;
   background: var(--card);
   border: 1px solid var(--border);
@@ -303,26 +389,103 @@ hr{
   overflow: auto;
 }
 
-.coordenadasA{
-
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
-
 .coordenadasAX,
 .coordenadasBX{
-  border-right: 1px solid  #333;
+  border-right: 1px solid rgba(148,163,184,.6);
   padding-right: 10px;
 }
-
 .coordenadasAY,
 .coordenadasBY{
   padding-left: 10px;
 }
-/* ====== RESPONSIVE ====== */
-@media (ma-width: 900px) {
-  .datosTecnicosVehiculos { grid-template-columns: 1fr; }
-  .formMain { flex-direction: column; }
-  .medidasDeformaciones { grid-template-columns: 1fr; }
-  .centroide { grid-template-columns: 1fr; }
+
+/* Sumas */
+.divSumaAX,
+.divSumaAY,
+.divSumaBX,
+.divSumaBY{
+  display:flex;
+  align-items:center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+.divSumaAX label,
+.divSumaAY label,
+.divSumaBX label,
+.divSumaBY label{
+  width: auto;
+  margin-right: 0;
+  color: #0f172a;
+  font-weight: 900;
+}
+.divSumaAX input,
+.divSumaAY input,
+.divSumaBX input,
+.divSumaBY input{
+  width: 120px;
+}
+
+/* =========================
+   FILA 4: PDOF (SIEMPRE ABAJO)
+   ========================= */
+.mainPDOF{
+  grid-row: 4 / 5;
+  padding-top: 14px;
+  text-align: center;
+}
+.mainPDOF h2{
+  text-align: center;
+  font-weight: bold;
+}
+.tab-PDOF{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  text-align: center;
+}
+.PDOFB,
+.PDOFA{
+  
+  display: grid;
+  grid-template-columns: auto 1fr auto 1fr; 
+  gap: 12px;
+  align-items: center;
+}
+
+.pdofInputB,
+.omegaInputB,
+.pdofInputA,
+.omegaInputA{
+  display: contents; 
+  width: 60%;
+}
+
+
+.PDOFB button, .PDOFA button{
+  padding: 8px 14px;
+  font-weight: 900;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+
+.PDOFB input, .PDOFA input{
+  width: 60%;
+  min-width: 90px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+/* =========================
+   RESPONSIVE (CORREGIDO)
+   ========================= */
+@media (max-width: 900px){
+  body{ padding: 14px; }
+  .datosTecnicosVehiculos{ grid-template-columns: 1fr; }
+  .formMain{ flex-direction: column; }
+  .mainDeformaciones{ grid-template-columns: 1fr; }
+  .centroide{ grid-template-columns: 1fr; }
+  .tab-PDOF{ grid-template-columns: 1fr; }
 }

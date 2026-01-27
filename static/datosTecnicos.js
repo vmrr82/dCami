@@ -58,14 +58,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function syncDesdeAnterior() {
         const ant = clamp(parseInt(anteriorInput.value) || 0);
-        anteriorInput.value = ant.toFixed(1);
-        posteriorInput.value = (100 - ant).toFixed(1);
+        anteriorInput.value = ant;
+        posteriorInput.value = (100 - ant);
     }
 
     function syncDesdePosterior() {
         const post = clamp(parseInt(posteriorInput.value) || 0);
-        posteriorInput.value = post.toFixed(1);
-        anteriorInput.value = (100 - post).toFixed(1);
+        posteriorInput.value = post;
+        anteriorInput.value = (100 - post);
     }
 
     function calcularPesos() {
@@ -73,13 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const ant = parseInt(anteriorInput.value) || 0;
         const post = parseInt(posteriorInput.value) || 0;
 
-        if (Math.abs(ant + post - 100) > 0.01) {
+        if (Math.abs(ant + post - 100) > 0.1) {
             alert("Anterior y Posterior deben sumar 100%");
             return;
         }
 
-        pesoAnteriorOut.value = (peso * ant / 100).toFixed(2);
-        pesoPosteriorOut.value = (peso * post / 100).toFixed(2);
+        pesoAnteriorOut.value = (peso * ant / 100);
+        pesoPosteriorOut.value = (peso * post / 100);
     }
 
     anteriorInput.addEventListener("input", syncDesdeAnterior);
@@ -109,14 +109,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function syncDesdeAnterior() {
         const ant = clamp(parseFloat(anteriorInput.value) || 0);
-        anteriorInput.value = ant.toFixed(1);
-        posteriorInput.value = (100 - ant).toFixed(1);
+        anteriorInput.value = ant;
+        posteriorInput.value = (100 - ant);
     }
 
     function syncDesdePosterior() {
         const post = clamp(parseFloat(posteriorInput.value) || 0);
-        posteriorInput.value = post.toFixed(1);
-        anteriorInput.value = (100 - post).toFixed(1);
+        posteriorInput.value = post;
+        anteriorInput.value = (100 - post);
     }
 
     function calcularPesos() {
@@ -124,13 +124,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const ant = parseFloat(anteriorInput.value) || 0;
         const post = parseFloat(posteriorInput.value) || 0;
 
-        if (Math.abs(ant + post - 100) > 0.01) {
+        if (Math.abs(ant + post - 100) > 0.1) {
             alert("Anterior y Posterior deben sumar 100%");
             return;
         }
 
-        pesoAnteriorOut.value = (peso * ant / 100).toFixed(2);
-        pesoPosteriorOut.value = (peso * post / 100).toFixed(2);
+        pesoAnteriorOut.value = (peso * ant / 100);
+        pesoPosteriorOut.value = (peso * post / 100);
     }
 
     anteriorInput.addEventListener("input", syncDesdeAnterior);
@@ -304,7 +304,7 @@ function calcularAreaA() {
         if (areaEl) areaEl.value = area.toFixed(2);
     }
 
-    areaTtalASum();
+    areaTotalASum();
 }
 
 
@@ -503,40 +503,46 @@ function centroideXArea() {
 }
 
 
-
 function centroideAY() {
+
     const numOrNull = (id) => {
         const el = document.getElementById(id);
         if (!el) return null;
-        const s = (el.value ?? "").trim();
+
+        let s = (el.value ?? "").trim();
         if (s === "") return null;
-        const n = Number(s);
+
+        s = s.replace(/\s+/g, "").replace(",", ".");
+        const n = parseFloat(s);
+
         return Number.isFinite(n) ? n : null;
     };
 
     for (let i = 1; i <= 13; i++) {
-        const out = document.getElementById(`centAY_${i}`); // yz1 = centAY_1
+        const out = document.getElementById(`centAY_${i}`);
         if (!out) continue;
 
-        const c1Val = numOrNull(`c_${i}`); // medida c2
-        const c2Val = numOrNull(`c_${i + 1}`); // medida c2
-        const zwVal = numOrNull(`zw_${i+1}`); // valor zw
+        const c1Val = numOrNull(`c_${i}`);       // D18
+        const c2Val = numOrNull(`c_${i + 1}`);   // D19 (y F19)
+        const zwVal = numOrNull(`zw_${i + 1}`);  // H19
 
-        if (c1Val == null || c2Val == null) {
+        if (c2Val == null) {
             out.value = "";
             continue;
         }
 
         const denom = 3 * (c1Val + c2Val);
-        if (denom === 0) {
+        if (!Number.isFinite(denom) || denom === 0) {
             out.value = "";
             continue;
         }
 
-        const val = zwVal * (2*c1Val+c2Val) / denom;
+        const val = c2Val - (zwVal * (2 * c1Val + c2Val)) / denom;
+
         out.value = val.toFixed(2);
     }
 }
+
 
 function centroideYArea() {
     for (let i = 1; i <= 13; i++) {
@@ -658,7 +664,7 @@ function centroideBY() {
 
         const c1Val = numOrNull(`c2_${i}`); // medida c2_2
         const c2Val = numOrNull(`c2_${i + 1}`); // medida c2_
-        const zwVal = numOrNull(`zw2_${i+1}`); // valor zw2
+        const zwVal = numOrNull(`zw2_${i + 1}`); // valor zw2
 
         if (c1Val == null || c2Val == null) {
             out.value = "";
@@ -671,7 +677,7 @@ function centroideBY() {
             continue;
         }
 
-        const val = zwVal * (2*c1Val+c2Val) / denom;
+        const val = zwVal * (2 * c1Val + c2Val) / denom;
         out.value = val.toFixed(2);
     }
 }
@@ -715,6 +721,8 @@ function calcularATotales() {
     centroideXArea();
     centroideAY();
     centroideYArea();
+    calcularSumaAX();
+    calcularSumaAY()
 }
 
 document.getElementById("calcularZW").addEventListener("click", calcularATotales);
@@ -728,4 +736,52 @@ function calcularBTotales() {
     centroideYAreaB();
 }
 
-document.getElementById("calcularZW").addEventListener("click", calcularBTotales);
+document.getElementById("calcularZW").addEventListener("click", calcularBTotales)
+
+//=========================================SUMA AX AY BX BY===============================
+
+function calcularSumaAX() {
+    let suma = 0;
+
+    for (let i = 1; i <= 14; i++) {
+        const el = document.getElementById(`mmxArea_${i}`);
+        suma += parseFloat(el?.value) || 0;
+    }
+
+    const total = document.getElementById("sumaAX");
+
+    const area = parseFloat(document.getElementById('areaTotalValueA')?.value) || 0;   // fuerza a número
+    console.log("suma:", suma, "area:", area);
+
+    // Si area es 0, NaN, undefined, etc.
+    if (!Number.isFinite(area) || area === 0) {
+        total.value = ""; // o "0.0" si prefieres
+        return;
+    }
+
+    const denom = (suma / area) / 10;
+    total.value = denom.toFixed(1);
+}
+
+function calcularSumaAY() {
+    let suma = 0;
+
+    for (let i = 1; i <= 14; i++) {
+        const el = document.getElementById(`mmxAreaY_${i}`);
+        suma += parseFloat(el?.value) || 0;
+    }
+
+    const total = document.getElementById("sumaAY");
+
+    const area = parseFloat(document.getElementById('areaTotalValueA')?.value) || 0;   // fuerza a número
+
+    // Si area es 0, NaN, undefined, etc.
+    if (!Number.isFinite(area) || area === 0) {
+        total.value = ""; // o "0.0" si prefieres
+        console.error("areaTotalASum() inválida:", area);
+        return;
+    }
+
+    const denom = (suma / area) / 10;
+    total.value = denom.toFixed(1);
+}
