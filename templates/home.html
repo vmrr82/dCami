@@ -19,9 +19,9 @@
 
     <!-- SIDEBAR IZQUIERDA -->
     <aside class="sidebar">
-      <a class="side-btn" href="{{ url_for('index') }}" target="mainIframe">Inicio</a>
-      <a class="side-btn">  Herramientas </a>
-      <a class="side-btn">  Enlaces </a>
+      <a class="side-btn" href="{{url_for('inicio') }}" target="mainIframe">Inicio</a>
+      <a class="side-btn" href="{{url_for('formulasParametros')}}" target="mainIframe">Fórmulas/Parámetros</a>
+      <a class="side-btn" href="{{url_for('enlaces')}}" target="mainIframe">Enlaces</a>
       <a class="side-btn">  Contacto </a>
 
 
@@ -35,7 +35,7 @@
 
     <!-- IFRAME -->
     <main class="iframe-area">
-      <iframe name="mainIframe" id="mainIframe" src="{{ url_for('datosTecnicos') }}" frameborder="0">
+      <iframe name="mainIframe" id="mainIframe" frameborder="0">
       </iframe>
     </main>
 

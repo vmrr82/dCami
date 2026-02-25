@@ -785,3 +785,98 @@ function calcularSumaAY() {
     const denom = (suma / area) / 10;
     total.value = denom.toFixed(1);
 }
+
+
+//========================================================================SVG VEHICULOS=========
+function parseNum(v) {
+  if (v == null) return NaN;
+  return parseFloat(String(v).trim().replace(",", "."));
+}
+
+function ensureOverlay(svgDoc, svg) {
+  const ns = "http://www.w3.org/2000/svg";
+  let g = svg.querySelector('g[data-overlay="deform"]');
+  if (!g) {
+    g = svgDoc.createElementNS(ns, "g");
+    g.setAttribute("data-overlay", "deform");
+    g.style.pointerEvents = "none";
+    svg.appendChild(g);
+  }
+  return g;
+}
+
+function drawPoint(svgDoc, g, x, y, r, label) {
+  const ns = "http://www.w3.org/2000/svg";
+
+  const c = svgDoc.createElementNS(ns, "circle");
+  c.setAttribute("cx", x);
+  c.setAttribute("cy", y);
+  c.setAttribute("r", r);
+  c.setAttribute("fill", "#000");
+  g.appendChild(c);
+
+  if (label) {
+    const t = svgDoc.createElementNS(ns, "text");
+    t.setAttribute("x", x + r * 1.2);
+    t.setAttribute("y", y - r * 1.2);
+    t.setAttribute("font-size", r * 6);
+    t.setAttribute("fill", "#000");
+    t.textContent = label;
+    g.appendChild(t);
+  }
+}
+
+function plotVehiculoAFromInputs({
+  objectId,        // "vehiculoA" (el <object>)
+  longitudAId,     // id del input longitudA
+  alturaAId,       // id del input alturaA
+  maxPoints = 5000,
+  invertY = true
+}) {
+  const { svgDoc, svg } = getEmbeddedSvg(objectId);
+  if (!svgDoc || !svg) {
+    console.error("SVG no accesible. ¿Ha cargado el <object>? ¿Mismo dominio?");
+    return;
+  }
+
+  const vb = getViewBoxSafe(svg);
+
+  const L = parseNum(document.getElementById(longitudAId)?.value);
+  const H = parseNum(document.getElementById(alturaAId)?.value);
+
+  if (!Number.isFinite(L) || !Number.isFinite(H) || L <= 0 || H <= 0) {
+    console.error("longitudA/alturaA inválidas:", { L, H });
+    return;
+  }
+
+  const overlay = ensureOverlay(svgDoc, svg);
+  overlay.innerHTML = "";
+
+  const r = Math.max(vb.w, vb.h) * 0.003; // tamaño proporcional para que siempre se vea
+
+  let dibujados = 0;
+
+  for (let i = 1; i <= maxPoints; i++) {
+    const cx = document.getElementById(`c_${i}`)?.value;
+    const cy = document.getElementById(`dc_${i}`)?.value;
+
+    // si no existe el input, asumimos que ya no hay más puntos
+    if (cx === undefined && cy === undefined) break;
+
+    const c = parseNum(cx);
+    const dc = parseNum(cy);
+
+    if (!Number.isFinite(c) || !Number.isFinite(dc)) continue;
+
+    const nx = c / L;
+    const ny = dc / H;
+
+    const x = vb.x + nx * vb.w;
+    const y = invertY ? (vb.y + (1 - ny) * vb.h) : (vb.y + ny * vb.h);
+
+    drawPoint(svgDoc, overlay, x, y, r, String(i));
+    dibujados++;
+  }
+
+  console.log("Puntos dibujados:", dibujados, "viewBox:", vb);
+}

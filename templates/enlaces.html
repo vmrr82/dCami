@@ -1,0 +1,22 @@
+{% block styles %}
+<link rel="stylesheet" href="{{ url_for('static', filename='enlaces.css') }}">
+<title>Enlaces</title>
+{% endblock %}
+{% block content %}
+<header>
+    <div class="container-grid">
+        <div class="content">
+            <h2 class="titleWeb"> ENLACES</h2>
+            
+            <p><BR></BR>En este apartado pondremos enlaces de interés con la materia a tratar:</p>
+            <ul>
+                <li><a class="link-url" href="https://www.momentumbcn.com/" target="_blank">Momentum</a></li>
+                <li><a class="link-url" href="https://blog.reconstruccionvirtual.es" target="_blank">blog.reconstruccionvirtual.es</a></li>
+                <li><a class="link-url" href="https://www.evu-spain.es/" target="_blank">Evu España</a></li>
+                <li><a class="link-url" href="https://www.cugc.es/" target="_blank">Centro Universitario de la Guardia Civil</a></li>
+            </ul>
+            
+        </div>
+    </div>
+</header>
+{% endblock%}

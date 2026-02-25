@@ -1,8 +1,21 @@
-{% block styles %}
+{% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='datosTecnicosStyle.css') }}">
+<!-- 1️⃣ Primero jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<!-- 2️⃣ Después Select2 -->
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+
+
+
+
 {% endblock %}
 {% block content %}
 <header>Datos técnicos de los vehículos implicados</header>
+
 <div class="container-grid">
     <div class="content">
         <a name="tab1" id="tab1"></a>
@@ -15,14 +28,19 @@
 
                 <!-- Selección modelo A -->
                 <form method="POST" action="{{ url_for('datosTecnicos') }}">
-                    <label for="modelo_vehiculoA">Seleccione un modelo:</label><br><br>
+                    <label for="modelo_vehiculoA">Listado de modelos disponibles:</label><br><br>
 
-                    <select name="modelo_vehiculoA" id="modelo_vehiculoA" required>
-                        <option value="">-- Seleccione un modelo --</option>
+                    <select name="modelo_vehiculoA" id="modelo_vehiculoA" class="modelo_vehiculoA" required>
+                        <option  value="">-- Seleccione un modelo --</option>
                         {% for x in listado %}
                         <option value="{{ x }}" {% if x==select_modelA %}selected{% endif %}>{{ x }}</option>
                         {% endfor %}
                     </select>
+                    <script>
+                        $(document).ready(function(){
+                            $('.modelo_vehiculoA').select2()
+                        });
+                    </script>
 
                     <input type="hidden" name="modelo_vehiculoB" value="{{ select_modelB or '' }}">
 
@@ -42,55 +60,55 @@
                         <div class="formCol">
                             <label for="pesoA">Masa:</label>
                             <div class="field has-unit" data-unit="Kg">
-                            <input type="number" id="pesoA" name="peso" value="{{ resultadoA.get('peso', 0) }}"
-                                required>
+                                <input type="number" id="pesoA" name="peso" value="{{ resultadoA.get('peso', 0) }}"
+                                    required>
                             </div>
 
                             <label for="longitudA">Longitud:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="longitudA" name="longitud"
-                                value="{{ resultadoA.longitud if resultadoA else 0 }}" required>
+                                <input type="number" id="longitudA" name="longitud"
+                                    value="{{ resultadoA.longitud if resultadoA else 0 }}" required>
                             </div>
                             <label for="alturaA">Altura:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="alturaA" name="altura"
-                                value="{{ resultadoA.altura if resultadoA else 0 }}" required>
+                                <input type="number" id="alturaA" name="altura"
+                                    value="{{ resultadoA.altura if resultadoA else 0 }}" required>
                             </div>
                             <label for="anchuraA">Anchura:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="anchuraA" name="anchura"
-                                value="{{ resultadoA.anchura if resultadoA else 0 }}" required>
-                                </div>
+                                <input type="number" id="anchuraA" name="anchura"
+                                    value="{{ resultadoA.anchura if resultadoA else 0 }}" required>
+                            </div>
                             <label for="batallaA">Batalla:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="batallaA" name="batallaA"
-                                    value="{{ resultadoA.batallaA if resultadoA else 0 }}"
-                                    oninput="calcularCentroAnteriorA()" required>
+                                    <input type="number" id="batallaA" name="batallaA"
+                                        value="{{ resultadoA.batallaA if resultadoA else 0 }}"
+                                        oninput="calcularCentroAnteriorA()" required>
                                 </div>
                                 <div class="tooltip-text"> Distancia entre eje delantero y eje trasero</div>
                             </div>
                             <label for="viaAntA">Vía Ant.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="viaAntA" name="viaAntA"
-                                value="{{ resultadoA.viaAntA if resultadoA else 0 }}" required>
+                                <input type="number" id="viaAntA" name="viaAntA"
+                                    value="{{ resultadoA.viaAntA if resultadoA else 0 }}" required>
                             </div>
                             <label for="viaPostA">Vía Post.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="viaPostA" name="viaPostA"
-                                value="{{ resultadoA.viaPostA if resultadoA else 0 }}" required>
-                                </div>  
+                                <input type="number" id="viaPostA" name="viaPostA"
+                                    value="{{ resultadoA.viaPostA if resultadoA else 0 }}" required>
+                            </div>
                             <label for="volAntA">Vol Ant.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="volAntA" name="volAntA" value="0"
-                                oninput="actualizarCentroFrontalA() ">
-                                </div>
+                                <input type="number" id="volAntA" name="volAntA" value="0"
+                                    oninput="actualizarCentroFrontalA() ">
+                            </div>
                             <label for="volPostA">Vol Post.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="volPostA" name="volPostA"
-                                value="{{ resultadoA.volPostA if resultadoA else 0 }}" required>
-                                </div>
+                                <input type="number" id="volPostA" name="volPostA"
+                                    value="{{ resultadoA.volPostA if resultadoA else 0 }}" required>
                             </div>
+                        </div>
 
                         <div class="formCol">
                             <h4>DISTRIBUCIÓN DE CARGA</h4>
@@ -98,24 +116,24 @@
                             <div class="distribucion">
                                 <label style="padding-top: 1px;" for="anteriorA">Anterior:</label>
                                 <div class="field has-unit" data-unit="%">
-                                <input type="number" id="anteriorA" name="anteriorA"
-                                    value="{{ resultadoA.get('anteriorA', 0) }}" required>
+                                    <input type="number" id="anteriorA" name="anteriorA"
+                                        value="{{ resultadoA.get('anteriorA', 0) }}" required>
                                 </div>
                                 <div class="field has-unit" data-unit="Kg">
-                                <input type="number" id="pesoAnteriorA" name="pesoAnteriorA"
-                                    value="{{ (resultadoA.get('peso',0) * resultadoA.get('anteriorA',0) / 100) }}"
-                                    readonly>
+                                    <input type="number" id="pesoAnteriorA" name="pesoAnteriorA"
+                                        value="{{ (resultadoA.get('peso',0) * resultadoA.get('anteriorA',0) / 100) }}"
+                                        readonly>
                                 </div>
 
                                 <label for="posteriorA">Posterior:</label>
                                 <div class="field has-unit" data-unit="%">
-                                <input type="number" id="posteriorA" name="posteriorA"
-                                    value="{{ resultadoA.get('posteriorA', 0) }}" oninput="calcularCentroAnteriorA()"
-                                    required>
+                                    <input type="number" id="posteriorA" name="posteriorA"
+                                        value="{{ resultadoA.get('posteriorA', 0) }}"
+                                        oninput="calcularCentroAnteriorA()" required>
                                 </div>
                                 <div class="field has-unit" data-unit="Kg">
-                                <input type="number" id="pesoPosteriorA" name="pesoPosteriorA" value="0" readonly>
-                                    </div>
+                                    <input type="number" id="pesoPosteriorA" name="pesoPosteriorA" value="0" readonly>
+                                </div>
                             </div>
 
                             <button id="calcularDistribucion" type="button">Calcular</button>
@@ -124,7 +142,7 @@
                             <label for="centroAnteriorA">Desde eje ant (CMFa):</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="centroAnteriorA" name="centroAnteriorA">
+                                    <input type="number" id="centroAnteriorA" name="centroAnteriorA">
                                 </div>
                                 <span class="tooltip-text">(Batalla × Distribución de Carga Posterior) / 100</span>
                             </div>
@@ -133,7 +151,7 @@
                             <label for="centroFrontalA">Desde el frontal:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="centroFrontalA" name="centroFrontalA">
+                                    <input type="number" id="centroFrontalA" name="centroFrontalA">
                                 </div>
                                 <span class="tooltip-text">Desde Eje Anterior + Voladizo Anterior</span>
 
@@ -146,7 +164,7 @@
                             <label for="offsetA">Offset deformación:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="offsetA" name="offsetA" value="0">
+                                    <input type="number" id="offsetA" name="offsetA" value="0">
                                 </div>
                                 <span class="tooltip-text">
                                     - Positiva: si c1 está a la derecha del vértice delantero izquierdo<br>
@@ -165,14 +183,19 @@
 
                 <!-- Selección modelo B -->
                 <form method="POST" action="{{ url_for('datosTecnicos') }}">
-                    <label for="modelo_vehiculoB">Seleccione un modelo:</label><br><br>
+                    <label for="modelo_vehiculoB">Listado de modelos disponibles:</label><br><br>
 
-                    <select name="modelo_vehiculoB" id="modelo_vehiculoB" required>
+                    <select name="modelo_vehiculoB" id="modelo_vehiculoB" class="modelo_vehiculoB" required>
                         <option value="">-- Seleccione un modelo --</option>
                         {% for x in listado %}
                         <option value="{{ x }}" {% if x==select_modelB %}selected{% endif %}>{{ x }}</option>
                         {% endfor %}
                     </select>
+                     <script>
+                        $(document).ready(function(){
+                            $('.modelo_vehiculoB').select2()
+                        });
+                    </script>
 
                     <input type="hidden" name="modelo_vehiculoA" value="{{ select_modelA or '' }}">
 
@@ -191,54 +214,54 @@
                         <div class="formCol">
                             <label for="pesoB">Masa:</label>
                             <div class="field has-unit" data-unit="Kg">
-                            <input type="number" id="pesoB" name="peso"
-                                value="{{ resultadoB.peso if resultadoB else 0 }}" required>
+                                <input type="number" id="pesoB" name="peso"
+                                    value="{{ resultadoB.peso if resultadoB else 0 }}" required>
                             </div>
                             <label for="longitudB">Longitud:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="longitudB" name="longitud"
-                                value="{{ resultadoB.longitud if resultadoB else 0 }}" required>
-                                </div>
+                                <input type="number" id="longitudB" name="longitud"
+                                    value="{{ resultadoB.longitud if resultadoB else 0 }}" required>
+                            </div>
                             <label for="alturaB">Altura:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="alturaB" name="altura"
-                                value="{{ resultadoB.altura if resultadoB else 0 }}" required>
+                                <input type="number" id="alturaB" name="altura"
+                                    value="{{ resultadoB.altura if resultadoB else 0 }}" required>
                             </div>
                             <label for="anchuraB">Anchura:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="anchuraB" name="anchura"
-                                value="{{ resultadoB.anchura if resultadoB else 0 }}" required>
-                                </div>
+                                <input type="number" id="anchuraB" name="anchura"
+                                    value="{{ resultadoB.anchura if resultadoB else 0 }}" required>
+                            </div>
                             <label for="batallaB">Batalla:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="batallaB" name="batalla"
-                                    value="{{ resultadoB.batallaB if resultadoB else 0 }}"
-                                    oninput="calcularCentroAnteriorB()" required>
-                                    </div>
+                                    <input type="number" id="batallaB" name="batalla"
+                                        value="{{ resultadoB.batallaB if resultadoB else 0 }}"
+                                        oninput="calcularCentroAnteriorB()" required>
+                                </div>
                                 <div class="tooltip-text"> Distancia entre eje delantero y eje trasero</div>
                             </div>
                             <label for="viaAntB">Vía Ant.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="viaAntB" name="viaAntB"
-                                value="{{ resultadoB.viaAntB if resultadoB else 0 }}" required>
-                                </div>
+                                <input type="number" id="viaAntB" name="viaAntB"
+                                    value="{{ resultadoB.viaAntB if resultadoB else 0 }}" required>
+                            </div>
                             <label for="viaPostB">Vía Post.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="viaPostB" name="viaPostB"
-                                value="{{ resultadoB.viaPostB if resultadoB else 0 }}" required>
-                                </div>
+                                <input type="number" id="viaPostB" name="viaPostB"
+                                    value="{{ resultadoB.viaPostB if resultadoB else 0 }}" required>
+                            </div>
                             <label for="volAntB">Vol. Ant.:</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="volAntB" name="volAntB" value="0"
-                                oninput="actualizarCentroFrontalB()">
-                                </div>
+                                <input type="number" id="volAntB" name="volAntB" value="0"
+                                    oninput="actualizarCentroFrontalB()">
+                            </div>
 
                             <label for="volPostB">Vol. Post. (mm):</label>
                             <div class="field has-unit" data-unit="mm">
-                            <input type="number" id="volPostB" name="volPostB"
-                                value="{{ resultadoB.volPostB if resultadoB else 0 }}" required>
-                                </div>
+                                <input type="number" id="volPostB" name="volPostB"
+                                    value="{{ resultadoB.volPostB if resultadoB else 0 }}" required>
+                            </div>
                         </div>
 
                         <div class="formCol">
@@ -247,22 +270,23 @@
                             <div class="distribucion">
                                 <label for="anteriorB">Anterior:</label>
                                 <div class="field has-unit" data-unit="%">
-                                <input type="number" step="1" id="anteriorB" name="anteriorB"
-                                    value="{{ resultadoB.get('anteriorB', 0)  }}" required>
-                                    </div>
-                                    <div class="field has-unit" data-unit="Kg">
-                                <input type="number" id="pesoAnteriorB" name="pesoAnteriorB"
-                                    value="{{ (resultadoB.get('peso',0) * resultadoB.get('anteriorB',0) / 100) }}"
-                                    readonly>
-                                    </div>
+                                    <input type="number" step="1" id="anteriorB" name="anteriorB"
+                                        value="{{ resultadoB.get('anteriorB', 0)  }}" required>
+                                </div>
+                                <div class="field has-unit" data-unit="Kg">
+                                    <input type="number" id="pesoAnteriorB" name="pesoAnteriorB"
+                                        value="{{ (resultadoB.get('peso',0) * resultadoB.get('anteriorB',0) / 100) }}"
+                                        readonly>
+                                </div>
 
                                 <label for="posteriorB">Posterior:</label>
                                 <div class="field has-unit" data-unit="%">
-                                <input type="number" id="posteriorB" name="posteriorB"
-                                    value="{{ resultadoB.get('posteriorB', 0) }}" oninput="calcularCentroAnteriorB()">
-                                    </div>
+                                    <input type="number" id="posteriorB" name="posteriorB"
+                                        value="{{ resultadoB.get('posteriorB', 0) }}"
+                                        oninput="calcularCentroAnteriorB()">
+                                </div>
                                 <div class="field has-unit" data-unit="Kg">
-                                <input type="number" id="pesoPosteriorB" name="pesoPosteriorB" value="0" readonly>
+                                    <input type="number" id="pesoPosteriorB" name="pesoPosteriorB" value="0" readonly>
                                 </div>
                             </div>
 
@@ -272,7 +296,7 @@
                             <label for="centroAnteriorB">Desde eje ant (CMFa):</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="centroAnteriorB" name="centroAnteriorB">
+                                    <input type="number" id="centroAnteriorB" name="centroAnteriorB">
                                 </div>
                                 <div class="tooltip-text"> (Batalla + Distribución Carga Posterior) / 100</div>
                             </div>
@@ -280,7 +304,7 @@
                             <label for="centroFrontalB">Desde el frontal:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="centroFrontalB" name="centroFrontalB">
+                                    <input type="number" id="centroFrontalB" name="centroFrontalB">
                                 </div>
                                 <div class="tooltip-text"> Desde Eje Anterior + Voladizo Anterior</div>
                             </div>
@@ -292,7 +316,7 @@
                             <label for="offsetB">Offset deformación:</label>
                             <div class="tooltip-container">
                                 <div class="field has-unit" data-unit="mm">
-                                <input type="number" id="offsetB" name="offsetB" value="0">
+                                    <input type="number" id="offsetB" name="offsetB" value="0">
                                 </div>
                                 <div class="tooltip-text">
                                     - Positiva: si c1 está a la derecha del vértice delantero izquierdo<br>
@@ -1112,27 +1136,127 @@
             <div class="tab-PDOF">
                 <div class="PDOFA">
                     <div class="pdofInputA">
-                    <BUTton id="buttonPdofInputA">PDOF</BUTton>
-                    <input type="number" id="inputPdofA">
+                        <BUTton id="buttonPdofInputA">PDOF</BUTton>
+                        <input type="number" id="inputPdofA">
                     </div>
                     <div class="omegaInputA">
-                    <BUTton id="buttonOmegaInputA">Ω</BUTton>
-                    <input type="number" id="inputOmegaA">
+                        <BUTton id="buttonOmegaInputA">Ω</BUTton>
+                        <input type="number" id="inputOmegaA">
                     </div>
                 </div>
                 <div class="PDOFB">
                     <div class="pdofInputB">
-                    <BUTton id="buttonPdofInputB">PDOF</BUTton>
-                    <input type="number" id="inputPdofB">
+                        <BUTton id="buttonPdofInputB">PDOF</BUTton>
+                        <input type="number" id="inputPdofB">
                     </div>
                     <div class="omegaInputB">
-                    <BUTton id="buttonOmegaInputB">Ω</BUTton>
-                    <input type="number" id="inputOmegaB">
+                        <BUTton id="buttonOmegaInputB">Ω</BUTton>
+                        <input type="number" id="inputOmegaB">
                     </div>
                 </div>
             </div>
 
 
+
+        </div>
+        <div class="vehiculos_planta">
+            <div class="tops">
+                <div class="top_veh_a">
+                    <h2 style="margin-bottom: 10px;">VEHÍCULO A</h2>
+                    <object id="vehiculoA" data="{{url_for('static',filename='svg/vehiculoA.svg')}}"
+                        type="image/svg+xml" class="dxf_view"></object>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", () => {
+                            const obj = document.getElementById("vehiculoA");
+
+                            obj.addEventListener("load", () => {
+                                const svgDoc = obj.contentDocument;
+                                const svg = svgDoc?.querySelector("svg");
+                                if (!svgDoc || !svg) {
+                                    console.error("No puedo acceder al SVG dentro del <object>.");
+                                    return;
+                                }
+
+                                // 1) viewBox seguro (si no existe, lo calculamos)
+                                let vbAttr = svg.getAttribute("viewBox");
+                                let vb;
+                                if (vbAttr) {
+                                    const [x, y, w, h] = vbAttr.split(/[\s,]+/).map(Number);
+                                    vb = { x, y, w, h };
+                                } else {
+                                    const bb = svg.getBBox();
+                                    const pad = Math.max(bb.width, bb.height) * 0.02;
+                                    vb = { x: bb.x - pad, y: bb.y - pad, w: bb.width + 2 * pad, h: bb.height + 2 * pad };
+                                    svg.setAttribute("viewBox", `${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+                                }
+
+                                // 2) Leer dimensiones del vehículo A (ajusta IDs si se llaman distinto)
+                                const L = parseFloat((document.getElementById("longitudA")?.value || "").replace(",", "."));
+                                const H = parseFloat((document.getElementById("alturaA")?.value || "").replace(",", "."));
+
+                                if (!Number.isFinite(L) || !Number.isFinite(H) || L <= 0 || H <= 0) {
+                                    console.error("longitudA/alturaA inválidas:", { L, H });
+                                    return;
+                                }
+
+                                // 3) Capa overlay
+                                const ns = "http://www.w3.org/2000/svg";
+                                let overlay = svg.querySelector('g[data-overlay="deform"]');
+                                if (!overlay) {
+                                    overlay = svgDoc.createElementNS(ns, "g");
+                                    overlay.setAttribute("data-overlay", "deform");
+                                    overlay.style.pointerEvents = "none";
+                                    svg.appendChild(overlay);
+                                }
+                                overlay.innerHTML = "";
+
+                                // 4) Tamaño del punto proporcional
+                                const r = Math.max(vb.w, vb.h) * 0.003;
+
+                                // 5) Dibujar puntos desde inputs c_i / dc_i
+                                const maxPoints = 3000;     // tu caso
+                                const invertY = true;       // prueba false si salen al revés
+
+                                let dibujados = 0;
+                                for (let i = 1; i <= maxPoints; i++) {
+                                    const cxEl = document.getElementById(`c_${i}`);
+                                    const cyEl = document.getElementById(`dc_${i}`);
+
+                                    // si no existe el input, asumimos fin (si tienes huecos, quita este break)
+                                    if (!cxEl && !cyEl) break;
+
+                                    const c = parseFloat((cxEl?.value || "").replace(",", "."));
+                                    const dc = parseFloat((cyEl?.value || "").replace(",", "."));
+                                    if (!Number.isFinite(c) || !Number.isFinite(dc)) continue;
+
+                                    const nx = c / L;
+                                    const ny = dc / H;
+
+                                    const x = vb.x + nx * vb.w;
+                                    const y = invertY ? (vb.y + (1 - ny) * vb.h) : (vb.y + ny * vb.h);
+
+                                    const circ = svgDoc.createElementNS(ns, "circle");
+                                    circ.setAttribute("cx", x);
+                                    circ.setAttribute("cy", y);
+                                    circ.setAttribute("r", r);
+                                    circ.setAttribute("fill", "#000");
+                                    overlay.appendChild(circ);
+
+                                    dibujados++;
+                                }
+
+                                console.log("✅ Puntos dibujados:", dibujados, "viewBox:", vb);
+                            });
+                        });
+                    </script>
+
+                </div>
+                <div class="top_veh_b">
+                    <h2 style="margin-bottom: 10px;">VEHÍCULO B</h2>
+                    <object data="{{url_for('static',filename='svg/vehiculoB.svg')}}" type="image/svg+xml"
+                        class="dxf_view"></object>
+                </div>
+            </div>
 
         </div>
     </div>
@@ -1143,5 +1267,7 @@
 
 
 <script src="{{ url_for('static', filename='datosTecnicos.js') }}"></script>
+
+
 
 {% endblock %}
